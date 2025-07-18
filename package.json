@@ -72,6 +72,7 @@
     "@types/swiper": "^5.4.3",
     "@types/uuid": "^10.0.0",
     "@types/xlsx": "^0.0.35",
+    "@vitejs/plugin-react": "^4.3.2",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.0",
