@@ -111,10 +111,10 @@ export const ProductCard = memo(function ProductCard({
 
   // Use the same dimensions and styling for all product cards regardless of featured status
   return (
-    <div className="relative bg-offwhite border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
+    <div className="relative bg-[#f5e7d4]">
       {/* Discount badge - ONLY show for featured deals */}
       {hasDiscount && discountPercent > 0 && (
-        <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10 shadow">
+        <div className="absolute top-3 left-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-3 py-1 rounded-full z-10 shadow-lg border border-white">
           {discountPercent}% OFF
         </div>
       )}
@@ -122,11 +122,9 @@ export const ProductCard = memo(function ProductCard({
       <WishlistButton productId={product.id} variant="card" />
 
       {/* Use normalized path that starts with a slash to prevent double slashes */}
-      <Link href={`/product/${product.id}`} className="block">
-        <Card
-        className="bg-offwhite h-full flex flex-col items-center p-4 transition-transform duration-200 hover:cursor-pointer hover:shadow-lg hover:-translate-y-1 border-none"
-          // className="product-card h-full flex flex-col items-center p-3 transition-transform duration-200 hover:cursor-pointer hover:shadow-md hover:-translate-y-1"
-          onClick={() => {
+      <Card
+        className="bg-white/80 h-full flex flex-col items-center p-5 transition-transform duration-200 hover:cursor-pointer border-none rounded-2xl shadow-xl border border-black/10"
+        onClick={() => {
             // Manually add to recently viewed products as backup
             try {
               const key = "recently_viewed_products";
@@ -174,58 +172,50 @@ export const ProductCard = memo(function ProductCard({
             } catch (e) {
               console.error("[MetaPixel] Error firing ViewContent pixel", e);
             }
+            // Navigate to product details page
+            setLocation(`/products/${product.id}`);
           }}
-        >
-           {/* <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-white/40 rounded-lg overflow-hidden border border-gray-100"></div> */}
-           {/* <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-white/40 rounded-lg overflow-hidden border border-gray-100"></div> */}
-          <CardContent className="p-0 w-full flex flex-col items-center h-full">
-            {/* <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-slate-50 rounded-md overflow-hidden"> */}
-                <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-offwhite rounded-lg overflow-hidden border border-gray-100">
-              <ProductImage
-                product={product}
-                className="rounded-sm"
-                priority={shouldPrioritize}
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              />
-            </div>
+      >
+        <CardContent className="p-0 w-full flex flex-col items-center h-full">
+          <div className="w-full flex-shrink-0 h-44 flex items-center justify-center mb-4 bg-white rounded-xl overflow-hidden border border-yellow-200 group-hover:border-orange-300 transition-all">
+            <ProductImage
+              product={product}
+              className="rounded-sm"
+              priority={shouldPrioritize}
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            />
+          </div>
 
-            <div className="flex flex-col flex-grow w-full">
-              <h3 className="font-medium text-center text-sm line-clamp-2 h-10">
-                {product.name}
-              </h3>
-              <div className="text-green-600 font-medium mt-1 text-center flex items-center justify-center gap-2">
-                {product.gstDetails && product.gstDetails.priceWithGst != null
-                  ? formatPrice(product.gstDetails.priceWithGst)
-                  : formatPrice(product.price)}
-                {/* Show MRP strikethrough only for featured deals with real discounts */}
-                {hasDiscount && typeof product.mrp === 'number' && (
-                  <span className="text-gray-400 text-xs line-through ml-2">
-                    {formatPrice(product.mrp)}
-                  </span>
-                )}
-              </div>
-              <div className="text-xs text-gray-500 mt-1 text-center line-clamp-1">
-                {stripHtmlTags(product.description).slice(0, 30)}...
-              </div>
+          <div className="flex flex-col flex-grow w-full">
+            <h3 className="font-semibold text-center text-base line-clamp-2 h-12 text-black group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            <div className="text-green-700 font-bold mt-1 text-center flex items-center justify-center gap-2 text-lg">
+              {product.gstDetails && product.gstDetails.priceWithGst != null
+                ? formatPrice(product.gstDetails.priceWithGst)
+                : formatPrice(product.price)}
+              {/* Show MRP strikethrough only for featured deals with real discounts */}
+              {hasDiscount && typeof product.mrp === 'number' && (
+                <span className="text-gray-400 text-sm line-through ml-2">
+                  {formatPrice(product.mrp)}
+                </span>
+              )}
             </div>
-            {showAddToCart && (
-              <Button
-                variant={featured ? "outline" : "ghost"}
-                size="sm"
-                className={`mt-2 w-full ${
-                  featured
-                    ? "border-primary text-primary hover:bg-primary hover:text-white"
-                    : "text-primary hover:bg-primary/10"
-                }`}
-                onClick={handleAddToCart}
-              >
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Cart
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-      </Link>
+            <div className="text-xs text-gray-500 mt-2 text-center line-clamp-2 min-h-[32px]">
+              {stripHtmlTags(product.description).slice(0, 50)}...
+            </div>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="mt-4 w-full text-black bg-gradient-to-r from-yellow-400 to-orange-500 font-extrabold rounded-full shadow-lg hover:from-orange-500 hover:to-yellow-400 transition-transform duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+              onClick={e => { handleAddToCart(e); e.currentTarget.classList.add('animate-pulse'); setTimeout(() => e.currentTarget.classList.remove('animate-pulse'), 300); }}
+            >
+              <ShoppingCart className="h-5 w-5 mr-2" />
+              Add to Cart
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 });

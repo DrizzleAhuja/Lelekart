@@ -92,27 +92,32 @@ export function SimpleHeader() {
     setLocation("/cart");
   };
 
+  const getDashboardLink = () => {
+    if (!user) return "/";
+    if (user.role === "admin") return "/admin";
+    if (user.role === "seller") return "/seller/dashboard";
+    return "/buyer/dashboard";
+  };
+
   return (
-    <header className="bg-offwhite text-dark fixed top-0 left-0 right-0 z-40 shadow-sm border-b border-cream">
+    <header className="bg-offwhite text-black sticky top-0 left-0 right-0 z-50 shadow-lg border-b border-cream font-sans" style={{fontFamily: 'Inter, Poppins, Arial, sans-serif'}}>
       {/* Desktop Header - with improved padding and spacing */}
-      <div className="container mx-auto px-4 h-14 hidden md:flex md:items-center font-sans border-b border-cream bg-offwhite">
+      <div className="container mx-auto px-4 h-16 hidden md:flex md:items-center">
         <div className="flex items-center justify-between w-full py-2">
           <div className="flex items-center space-x-6">
             <Link href="/">
-              <div className="flex items-center">
-                <span className="text-3xl md:text-4xl font-serif font-extrabold text-black tracking-widest" style={{letterSpacing: '0.08em', lineHeight: '1', fontFamily: 'Georgia, Times, Times New Roman, serif'}}>
-                  <span style={{letterSpacing: '0.01em'}}>L</span>elekart
-                  <span className="inline-block align-top ml-2 w-2 h-2 rounded-full" style={{background: '#e2bfae', marginTop: '-0.5em'}}></span>
-                </span>
+              <div className="flex items-center gap-2">
+                {/* <img src="https://drive.google.com/thumbnail?id=1RNjADzUc3bRdEpavAv5lxcN1P9VLG-PC&sz=w1000" alt="Lelekart Logo" className="h-10 w-auto rounded-lg shadow-md border border-gray-200 bg-[#f5e7d4] p-1" /> */}
+                <span className="text-3xl font-extrabold tracking-tight text-black">Lelekart</span>
               </div>
             </Link>
             <div className="flex-grow max-w-xl">
-              <div className="bg-cream rounded-lg px-2 py-1 flex items-center border border-gray-300 shadow-sm">
-                <SimpleSearch className="z-20 w-full text-black placeholder:text-black" variant="default" />
+              <div className="bg-offwhite  px-3 py-1 flex items-center border border-cream shadow-inner">
+                <SimpleSearch className="z-20 w-full text-black placeholder:text-gray-500" variant="default" />
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center gap-4">
             {/* Hide Home button on home page */}
             {location !== "/" && (
               <Link href="/">
@@ -127,76 +132,49 @@ export function SimpleHeader() {
               </Link>
             )}
             {!user ? (
-              // Show login button for non-authenticated users
-              <Button
-                variant="ghost"
-                className="text-dark hover:text-dark hover:bg-cream h-10 font-semibold"
-                onClick={() => setLocation("/auth")}
-              >
-                Login
-              </Button>
+              <a href="/auth" className="flex items-center py-2 px-5 bg-primary text-white font-semibold rounded-full shadow hover:bg-primary/90 transition">
+                <User className="mr-2 h-5 w-5" />
+                <span>Login</span>
+              </a>
             ) : (
-              // Show user dropdown for authenticated users
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-dark font-bold flex items-center hover:bg-cream h-10 px-4"
-                  >
-                    <User className="mr-2 h-4 w-4" />
-                    <span className="font-bold text-dark">{user.name || user.username}</span>
+                  <Button variant="ghost" className="flex items-center py-2 px-5 bg-gray-100 text-primary font-semibold rounded-full shadow hover:bg-gray-200 transition">
+                    <span>{user.name || user.username}</span>
                     <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-60">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link
-                      href={
-                        user.role === "admin"
-                          ? "/admin"
-                          : user.role === "seller"
-                            ? "/seller/dashboard"
-                            : "/buyer/dashboard"
-                      }
-                      className="cursor-pointer"
-                    >
+                    <Link href={getDashboardLink()} className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" /> 
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="cursor-pointer"
-                  >
-                    <LogOut className="mr-2 h-4 w-4" /> Logout
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                    <span className="mr-2">🚪</span> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-
-            {(!user || user.role === "buyer") && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-dark hover:bg-cream relative h-10 w-10 flex items-center justify-center"
-                onClick={handleCartClick}
-                title="Shopping Cart"
-              >
-                <ShoppingCart className="h-5 w-5" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-blush text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow">
-                    {cartItemCount}
-                  </span>
-                )}
-              </Button>
-            )}
+            <button
+              onClick={handleCartClick}
+              className="relative p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition shadow"
+              title="Shopping Cart"
+            >
+              <ShoppingCart className="h-6 w-6 text-primary" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Add more margin below navbar for categories spacing, especially on mobile */}
-      <div className="w-full bg-transparent" style={{ height: '0.5rem' }} />
+      {/* Remove or reduce margin below navbar for categories spacing */}
+      {/* No extra div or margin here, category menu should appear immediately below */}
 
       {/* Mobile Header with improved spacing */}
       <div className="md:hidden px-4">

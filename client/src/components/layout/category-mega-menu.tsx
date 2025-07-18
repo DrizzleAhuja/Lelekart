@@ -96,7 +96,7 @@ export function CategoryMegaMenu() {
     <div className="w-full bg-cream border-b border-cream shadow-md z-30 sticky top-14">
       <div className="container mx-auto">
         <div className="flex justify-center">
-          <div className="flex flex-nowrap gap-2 py-2 overflow-x-auto scrollbar-hide">
+          <div className="flex flex-nowrap gap-2 py-0 overflow-x-auto scrollbar-hide">
             {/* Categories with subcategories - shown as dropdowns */}
             {categoriesWithSubcategories.map(category => (
               <DropdownMenu key={category.id}>

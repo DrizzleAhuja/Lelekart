@@ -168,13 +168,13 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-cream text-black border-t border-cream py-8 mt-8">
+    <footer className="bg-white/95 text-black border-t border-gray-100 py-10 mt-12 shadow-inner rounded-t-2xl font-sans" style={{fontFamily: 'Inter, Poppins, Arial, sans-serif'}}>
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* About Section */}
           {groupedContent.about && (
             <div>
-              <h3 className="text-gray-400 font-medium mb-4 uppercase text-sm">
+              <h3 className="text-primary font-bold mb-4 uppercase text-sm tracking-wider">
                 About
               </h3>
               <ul className="space-y-2 text-sm">
@@ -182,12 +182,8 @@ export function Footer() {
                   <li key={item.id}>
                     <Link
                       href={formatPath(item.content)}
-                      className="hover:underline"
-                      target={
-                        item.content.trim().startsWith("http")
-                          ? "_blank"
-                          : "_self"
-                      }
+                      className="hover:underline text-gray-700 hover:text-primary transition"
+                      target={item.content.trim().startsWith("http") ? "_blank" : "_self"}
                     >
                       {item.title}
                     </Link>
@@ -200,7 +196,7 @@ export function Footer() {
           {/* Help Section */}
           {groupedContent.help && (
             <div>
-              <h3 className="text-gray-400 font-medium mb-4 uppercase text-sm">
+              <h3 className="text-primary font-bold mb-4 uppercase text-sm tracking-wider">
                 Help
               </h3>
               <ul className="space-y-2 text-sm">
@@ -208,12 +204,8 @@ export function Footer() {
                   <li key={item.id}>
                     <Link
                       href={formatPath(item.content)}
-                      className="hover:underline"
-                      target={
-                        item.content.trim().startsWith("http")
-                          ? "_blank"
-                          : "_self"
-                      }
+                      className="hover:underline text-gray-700 hover:text-primary transition"
+                      target={item.content.trim().startsWith("http") ? "_blank" : "_self"}
                     >
                       {item.title}
                     </Link>
@@ -226,7 +218,7 @@ export function Footer() {
           {/* Consumer Policy Section */}
           {groupedContent.consumer_policy && (
             <div>
-              <h3 className="text-gray-400 font-medium mb-4 uppercase text-sm">
+              <h3 className="text-primary font-bold mb-4 uppercase text-sm tracking-wider">
                 Consumer Policy
               </h3>
               <ul className="space-y-2 text-sm">
@@ -234,12 +226,8 @@ export function Footer() {
                   <li key={item.id}>
                     <Link
                       href={formatPath(item.content)}
-                      className="hover:underline"
-                      target={
-                        item.content.trim().startsWith("http")
-                          ? "_blank"
-                          : "_self"
-                      }
+                      className="hover:underline text-gray-700 hover:text-primary transition"
+                      target={item.content.trim().startsWith("http") ? "_blank" : "_self"}
                     >
                       {item.title}
                     </Link>
@@ -252,7 +240,7 @@ export function Footer() {
           {/* Social Section */}
           {groupedContent.social && (
             <div>
-              <h3 className="text-gray-400 font-medium mb-4 uppercase text-sm">
+              <h3 className="text-primary font-bold mb-4 uppercase text-sm tracking-wider">
                 Social
               </h3>
               <ul className="space-y-2 text-sm">
@@ -261,7 +249,7 @@ export function Footer() {
                     {item.content.trim().startsWith("http") ? (
                       <a
                         href={item.content.trim()}
-                        className="hover:underline flex items-center"
+                        className="hover:underline flex items-center text-gray-700 hover:text-primary transition"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -271,7 +259,7 @@ export function Footer() {
                     ) : (
                       <Link
                         href={formatPath(item.content)}
-                        className="hover:underline flex items-center"
+                        className="hover:underline flex items-center text-gray-700 hover:text-primary transition"
                       >
                         {socialMediaMapping[item.title] || null}
                         {item.title}
@@ -283,10 +271,10 @@ export function Footer() {
               {/* Mail Us Section */}
               {groupedContent.mail_us && groupedContent.mail_us.length > 0 ? (
                 <div className="mt-6">
-                  <h3 className="text-gray-400 font-medium mb-2 uppercase text-sm">
+                  <h3 className="text-primary font-bold mb-2 uppercase text-sm tracking-wider">
                     Mail Us:
                   </h3>
-                  <p className="text-xs leading-relaxed">
+                  <p className="text-xs leading-relaxed bg-gray-50 rounded-lg p-3 border border-gray-100 shadow-sm">
                     {groupedContent.mail_us.length === 1 &&
                     groupedContent.mail_us[0].content.includes("\n")
                       ? // Handle case where content has embedded newlines
@@ -319,10 +307,10 @@ export function Footer() {
                 </div>
               ) : (
                 <div className="mt-6">
-                  <h3 className="text-gray-400 font-medium mb-2 uppercase text-sm">
+                  <h3 className="text-primary font-bold mb-2 uppercase text-sm tracking-wider">
                     Mail Us:
                   </h3>
-                  <p className="text-xs leading-relaxed">
+                  <p className="text-xs leading-relaxed bg-gray-50 rounded-lg p-3 border border-gray-100 shadow-sm">
                     Lelekart Internet Private Limited,
                     <br />
                     Buildings Alyssa, Begonia &<br />
@@ -341,7 +329,7 @@ export function Footer() {
             </div>
           )}
         </div>
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-xs text-gray-400">
+        <div className="border-t border-gray-200 mt-10 pt-8 text-center text-xs text-gray-400">
           <p>
             &copy; {new Date().getFullYear()} Lelekart.com. All rights reserved.
           </p>

@@ -268,14 +268,10 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
   return (
     <>
       {/* Main hero slider */}
-      <div
-        className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-indigo-700"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div className="relative overflow-hidden bg-[#f5e7d4] shadow-lg rounded-xl" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <div
           ref={sliderRef}
-          className="flex transition-transform duration-500 ease-in-out"
+          className="flex transition-transform duration-500 ease-in-out min-h-[340px] md:min-h-[420px]"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {sliderImages.map((image, index) => (
@@ -286,20 +282,20 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
             >
               <div className="container mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row items-center">
                 {/* Content area */}
-                <div className="md:w-1/2 text-white mb-8 md:mb-0 md:pr-8">
+                <div className="md:w-1/2 text-black mb-8 md:mb-0 md:pr-8">
                   {image.badgeText && (
-                    <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-md uppercase">
+                    <span className="bg-yellow-400 text-black text-xs font-semibold px-3 py-1 rounded-md uppercase shadow">
                       {image.badgeText}
                     </span>
                   )}
-                  <h2 className="text-3xl md:text-5xl font-bold mt-4 leading-tight">
+                  <h2 className="text-3xl md:text-5xl font-extrabold mt-4 leading-tight drop-shadow-sm">
                     {image.title || "Summer Sale Collection"}
                   </h2>
-                  <p className="mt-4 text-lg md:text-xl opacity-90 max-w-md">
+                  <p className="mt-4 text-lg md:text-xl opacity-90 max-w-md text-black/80">
                     {image.subtitle || "Up to 50% off on all summer essentials"}
                   </p>
                   <Button
-                    className="mt-6 bg-white text-blue-600 hover:bg-gray-100"
+                    className="mt-6 bg-black text-white hover:bg-gray-900 shadow-lg rounded-full px-8 py-3 text-lg font-semibold transition"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSlideClick(image);
@@ -310,7 +306,7 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
                 </div>
 
                 {/* Image area */}
-                <div className="md:w-1/2">
+                <div className="md:w-1/2 flex justify-center items-center">
                   <img
                     src={
                       image.url && !image.url.includes("placeholder.com")
@@ -318,7 +314,7 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
                         : getCategoryImage(image.category)
                     }
                     alt={image.alt}
-                    className="w-full h-64 md:h-80 object-cover rounded-lg shadow-lg bg-gray-50"
+                    className="w-full h-64 md:h-80 object-cover rounded-2xl shadow-2xl border-4 border-white"
                     onError={(e) => {
                       // Use a category-specific fallback image on error
                       const target = e.target as HTMLImageElement;
@@ -336,19 +332,19 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
         <Button
           variant="outline"
           size="icon"
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-lg z-10 hover:bg-white"
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white rounded-full p-2 shadow-lg z-10 hover:bg-black"
           onClick={prevSlide}
         >
-          <ChevronLeft className="text-primary" />
+          <ChevronLeft className="text-white" />
         </Button>
 
         <Button
           variant="outline"
           size="icon"
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-lg z-10 hover:bg-white"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white rounded-full p-2 shadow-lg z-10 hover:bg-black"
           onClick={nextSlide}
         >
-          <ChevronRight className="text-primary" />
+          <ChevronRight className="text-white" />
         </Button>
 
         {/* Indicator Dots */}
@@ -356,8 +352,8 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
           {sliderImages.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 rounded-full ${
-                index === currentSlide ? "bg-white" : "bg-white/50"
+              className={`w-2 h-2 rounded-full border border-black ${
+                index === currentSlide ? "bg-black" : "bg-black/30"
               }`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -370,104 +366,98 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
 
       {/* Deal of the Day Section - only show if we have deal data */}
       {dealOfTheDay && (
-        <div className="bg-gray-50 py-6">
+        <div className="bg-[#f5e7d4] py-6 border-t-2 border-black/10">
           <div className="container mx-auto px-4">
-            <div className="bg-cream rounded-lg shadow-md border border-gray-200 p-4 md:p-6">
-              <div className="flex flex-col md:flex-row">
-                {/* Left side - Deal info */}
-                <div className="md:w-1/2 mb-4 md:mb-0 md:pr-8">
-                  <div className="flex items-center mb-4">
-                    <div className="bg-red-600 text-white text-xs font-medium px-2 py-1 rounded">
-                      DEAL OF THE DAY
+            <div className="bg-white/80 rounded-2xl shadow-xl border border-black/10 p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
+              {/* Left side - Deal info */}
+              <div className="md:w-1/2 mb-4 md:mb-0 md:pr-8 text-black">
+                <div className="flex items-center mb-4">
+                  <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-3 py-1 rounded shadow uppercase tracking-wider">
+                    DEAL OF THE DAY
+                  </div>
+                  <div className="flex ml-4 space-x-2">
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-orange-600">
+                        {countdown.hours}
+                      </div>
+                      <div className="text-xs text-gray-500">Hours</div>
                     </div>
-                    <div className="flex ml-4 space-x-2">
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-red-600">
-                          {countdown.hours}
-                        </div>
-                        <div className="text-xs text-gray-500">Hours</div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-orange-600">
+                        {countdown.minutes}
                       </div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-red-600">
-                          {countdown.minutes}
-                        </div>
-                        <div className="text-xs text-gray-500">Minutes</div>
+                      <div className="text-xs text-gray-500">Minutes</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-orange-600">
+                        {countdown.seconds}
                       </div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-red-600">
-                          {countdown.seconds}
-                        </div>
-                        <div className="text-xs text-gray-500">Seconds</div>
-                      </div>
+                      <div className="text-xs text-gray-500">Seconds</div>
                     </div>
                   </div>
-
-                  <h3 className="text-xl font-medium mb-2">
-                    {dealOfTheDay.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {dealOfTheDay.subtitle}
-                  </p>
-
-                  <div className="flex items-center mb-4">
-                    <span className="text-2xl font-bold">
-                      ₹
-                      {typeof dealOfTheDay.discountPrice === "number"
-                        ? dealOfTheDay.discountPrice.toFixed(2)
-                        : typeof dealOfTheDay.discountPrice === "string"
-                          ? parseFloat(dealOfTheDay.discountPrice).toFixed(2)
-                          : "0.00"}
-                    </span>
-                    <span className="text-gray-500 line-through ml-2">
-                      ₹
-                      {typeof dealOfTheDay.originalPrice === "number"
-                        ? dealOfTheDay.originalPrice.toFixed(2)
-                        : typeof dealOfTheDay.originalPrice === "string"
-                          ? parseFloat(dealOfTheDay.originalPrice).toFixed(2)
-                          : "0.00"}
-                    </span>
-                    <span className="text-green-600 ml-2 text-sm">
-                      {dealOfTheDay.discountPercentage}% off
-                    </span>
-                  </div>
-
-                  <Button
-                    className="bg-blue-600 hover:bg-blue-700"
-                    onClick={handleDealAddToCart}
-                    aria-label="Add to Cart"
-                    title="Add to Cart"
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Add to Cart
-                  </Button>
                 </div>
-
-                {/* Right side - Product image */}
-                <div className="md:w-1/2">
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => {
-                      if (dealOfTheDay.productId) {
-                        navigate(`/product/${dealOfTheDay.productId}`);
-                      }
+                <h3 className="text-2xl font-extrabold mb-2 drop-shadow-sm">
+                  {dealOfTheDay.title}
+                </h3>
+                <p className="text-base text-black/80 mb-4">
+                  {dealOfTheDay.subtitle}
+                </p>
+                <div className="flex items-center mb-4 gap-3">
+                  <span className="text-3xl font-extrabold text-green-700">
+                    ₹
+                    {typeof dealOfTheDay.discountPrice === "number"
+                      ? dealOfTheDay.discountPrice.toFixed(2)
+                      : typeof dealOfTheDay.discountPrice === "string"
+                        ? parseFloat(dealOfTheDay.discountPrice).toFixed(2)
+                        : "0.00"}
+                  </span>
+                  <span className="text-gray-400 line-through ml-2 text-lg">
+                    ₹
+                    {typeof dealOfTheDay.originalPrice === "number"
+                      ? dealOfTheDay.originalPrice.toFixed(2)
+                      : typeof dealOfTheDay.originalPrice === "string"
+                        ? parseFloat(dealOfTheDay.originalPrice).toFixed(2)
+                        : "0.00"}
+                  </span>
+                  <span className="text-green-600 ml-2 text-base font-semibold">
+                    {dealOfTheDay.discountPercentage}% off
+                  </span>
+                </div>
+                <Button
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold rounded-full px-8 py-3 text-lg shadow-lg hover:from-orange-500 hover:to-yellow-500 transition"
+                  onClick={handleDealAddToCart}
+                  aria-label="Add to Cart"
+                  title="Add to Cart"
+                >
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Add to Cart
+                </Button>
+              </div>
+              {/* Right side - Product image */}
+              <div className="md:w-1/2 flex justify-center items-center">
+                <div
+                  className="cursor-pointer bg-white/90 rounded-2xl p-4 shadow-lg border border-black/10 hover:scale-105 transition-transform"
+                  onClick={() => {
+                    if (dealOfTheDay.productId) {
+                      navigate(`/product/${dealOfTheDay.productId}`);
+                    }
+                  }}
+                >
+                  <img
+                    src={
+                      dealOfTheDay.image &&
+                      !dealOfTheDay.image.includes("placeholder.com")
+                        ? dealOfTheDay.image
+                        : getDealCategory()
+                    }
+                    alt={dealOfTheDay.title}
+                    className="w-full max-h-56 object-contain rounded-xl border-2 border-yellow-200"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = getDealCategory();
                     }}
-                  >
-                    <img
-                      src={
-                        dealOfTheDay.image &&
-                        !dealOfTheDay.image.includes("placeholder.com")
-                          ? dealOfTheDay.image
-                          : getDealCategory()
-                      }
-                      alt={dealOfTheDay.title}
-                      className="w-full max-h-48 object-contain bg-cream rounded-lg p-2 border border-gray-100"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.onerror = null;
-                        target.src = getDealCategory();
-                      }}
-                    />
-                  </div>
+                  />
                 </div>
               </div>
             </div>

@@ -66,12 +66,11 @@ export function FashionProductCard({ product }: FashionProductCardProps) {
 
   // Use a consistent fashion image for all fashion products
   return (
-    <div className="relative">
+    <div className="relative bg-[#f5e7d4]">
       {/* Add Wishlist button on top right of card */}
       <WishlistButton productId={product.id} variant="card" />
-      
       <Card 
-        className="product-card h-full flex flex-col items-center p-3 transition-transform duration-200 hover:cursor-pointer hover:shadow-md hover:-translate-y-1"
+        className="bg-white/80 h-full flex flex-col items-center p-5 transition-transform duration-200 hover:cursor-pointer rounded-2xl shadow-xl border border-black/10"
         onClick={() => {
           try {
             console.log(`Navigating to product details page: /product/${product.id}`);
@@ -82,27 +81,29 @@ export function FashionProductCard({ product }: FashionProductCardProps) {
         }}
       >
         <CardContent className="p-0 w-full flex flex-col items-center h-full">
-          <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-slate-50 rounded-md">
+          <div className="w-full flex-shrink-0 h-44 flex items-center justify-center mb-4 bg-white rounded-xl overflow-hidden border border-yellow-200">
             <img
               src="/images/categories/fashion.svg"
               alt={product.name}
               className="max-w-full max-h-full object-contain rounded-sm"
             />
           </div>
-          
           <div className="flex flex-col flex-grow w-full">
-            <h3 className="font-medium text-center text-sm line-clamp-2 h-10">{product.name}</h3>
-            <div className="text-green-600 font-medium mt-1 text-center">{formatPrice(product.price)}</div>
+            <h3 className="font-semibold text-center text-base line-clamp-2 h-12 text-black group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            <div className="text-green-700 font-bold mt-1 text-center flex items-center justify-center gap-2 text-lg">
+              {formatPrice(product.price)}
+            </div>
             <div className="text-xs text-gray-500 mt-1 text-center line-clamp-1">{stripHtmlTags(product.description).slice(0, 30)}...</div>
           </div>
-          
-          <Button 
+          <Button
             variant="ghost"
-            size="sm" 
-            className="mt-2 w-full text-primary hover:bg-primary/10"
-            onClick={handleAddToCart}
+            size="lg"
+            className="mt-4 w-full text-black bg-gradient-to-r from-yellow-400 to-orange-500 font-extrabold rounded-full shadow-lg hover:from-orange-500 hover:to-yellow-400 transition-transform duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+            onClick={e => { handleAddToCart(e); e.currentTarget.classList.add('animate-pulse'); setTimeout(() => e.currentTarget.classList.remove('animate-pulse'), 300); }}
           >
-            <ShoppingCart className="h-4 w-4 mr-2" />
+            <ShoppingCart className="h-5 w-5 mr-2" />
             Add to Cart
           </Button>
         </CardContent>

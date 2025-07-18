@@ -522,107 +522,97 @@ export default function CategoryPage() {
         )
       )}
 
-      {/* Products grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-          {Array(10)
-            .fill(0)
-            .map((_, i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="h-48 w-full rounded-md" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
+      {/* Products grid - Mood board style */}
+      <div className="bg-[#f8f5f0] rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-lg font-semibold text-gray-700">Show filter</span>
+        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array(8)
+              .fill(0)
+              .map((_, i) => (
+                <div key={i} className="aspect-square bg-white rounded-xl shadow-md flex items-center justify-center">
+                  <Skeleton className="h-24 w-24 rounded" />
+                </div>
+              ))}
+          </div>
+        ) : filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((product: Product) => (
+              <div
+                key={product.id}
+                className="aspect-square bg-white rounded-xl shadow-md flex flex-col items-center justify-center p-4 hover:shadow-xl transition cursor-pointer"
+                onClick={() => setLocation(`/products/${product.id}`)}
+              >
+                <div className="w-full h-32 flex items-center justify-center mb-2">
+                  <img
+                    src={product.imageUrl || "/images/placeholder.svg"}
+                    alt={product.name}
+                    className="max-w-full max-h-full object-contain rounded"
+                  />
+                </div>
+                <div className="w-full text-center mt-2">
+                  <span className="block text-base font-medium text-gray-900 truncate">{product.name}</span>
+                </div>
               </div>
             ))}
-        </div>
-      ) : filteredProducts.length > 0 ? (
-        <>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-            {filteredProducts.map((product: Product) =>
-              categoryName.toLowerCase() === "fashion" ? (
-                <FashionProductCardFixed
-                  key={product.id}
-                  product={product}
-                  className="h-full"
-                />
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-semibold">No Products Found</h2>
+            <p className="mt-2 text-gray-600">
+              {selectedSubcategory ? (
+                <>No products found in this subcategory.</>
               ) : (
-                <ProductCard key={product.id} product={product} />
-              )
-            )}
+                <>No products found in this category.</>
+              )}
+            </p>
           </div>
+        )}
+      </div>
 
-          {/* Pagination component */}
-          {pagination && pagination.totalPages > 1 && (
-            <Pagination
-              currentPage={pagination.currentPage}
-              totalPages={pagination.totalPages}
-              onPageChange={(page) => {
-                // Get current params and preserve them (like limit)
-                const params = new URLSearchParams(
-                  location.split("?")[1] || ""
-                );
+      {/* Pagination component */}
+      {pagination && pagination.totalPages > 1 && (
+        <Pagination
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={(page) => {
+            // Get current params and preserve them (like limit)
+            const params = new URLSearchParams(
+              location.split("?")[1] || ""
+            );
 
-                // Update the page parameter
-                params.set("page", page.toString());
+            // Update the page parameter
+            params.set("page", page.toString());
 
-                // Make sure limit parameter is preserved
-                if (!params.has("limit") && itemsPerPage !== 10) {
-                  params.set("limit", itemsPerPage.toString());
-                }
+            // Make sure limit parameter is preserved
+            if (!params.has("limit") && itemsPerPage !== 10) {
+              params.set("limit", itemsPerPage.toString());
+            }
 
-                // Build new URL with category and params
-                const newUrl = `/category/${categoryName}?${params.toString()}`;
-                console.log(`Navigating to: ${newUrl}`);
+            // Build new URL with category and params
+            const newUrl = `/category/${categoryName}?${params.toString()}`;
+            console.log(`Navigating to: ${newUrl}`);
 
-                // Update the page
-                setCurrentPage(page);
+            // Update the page
+            setCurrentPage(page);
 
-                // Update location
-                setLocation(newUrl);
+            // Update location
+            setLocation(newUrl);
 
-                // Scroll to top when page changes
-                window.scrollTo(0, 0);
-              }}
-            />
-          )}
-
-          {/* Results count */}
-          <div className="text-sm text-gray-500 text-center mt-2">
-            Showing {(pagination.currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(pagination.currentPage * itemsPerPage, pagination.total)}{" "}
-            of {pagination.total} products
-          </div>
-        </>
-      ) : (
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold">No Products Found</h2>
-          <p className="mt-2 text-gray-600">
-            {selectedSubcategory ? (
-              <>
-                No products found in the "{selectedSubcategory}" subcategory.
-                <br />
-                <span className="text-sm text-gray-500 mt-2 block">
-                  Products may not be assigned to this subcategory yet.
-                </span>
-              </>
-            ) : (
-              "We couldn't find any products matching your criteria."
-            )}
-          </p>
-          {(selectedBrands.length > 0 ||
-            priceRange[0] > 0 ||
-            priceRange[1] < 100000 ||
-            selectedSubcategory) && (
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={handleClearFilters}
-            >
-              Clear Filters
-            </Button>
-          )}
-        </div>
+            // Scroll to top when page changes
+            window.scrollTo(0, 0);
+          }}
+        />
       )}
+
+      {/* Results count */}
+      <div className="text-sm text-gray-500 text-center mt-2">
+        Showing {(pagination.currentPage - 1) * itemsPerPage + 1} to{" "}
+        {Math.min(pagination.currentPage * itemsPerPage, pagination.total)}{" "}
+        of {pagination.total} products
+      </div>
     </>
   );
 }

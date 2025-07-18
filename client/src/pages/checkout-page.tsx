@@ -968,15 +968,15 @@ export default function CheckoutPage() {
     finalOrderTotal
   );
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-8">
-      <h1 className="text-2xl font-bold mb-8 text-center sm:text-left">
+    <div className="container mx-auto py-8 px-2 sm:px-4 bg-[#f5e7d4]">
+      <h1 className="text-2xl font-bold mb-8 text-center sm:text-left text-black">
         Checkout
       </h1>
 
       <div className="flex flex-col md:flex-row gap-8">
         {/* Shipping Form */}
         <div className="w-full md:w-2/3">
-          <div className="bg-white rounded-lg shadow-md p-2 sm:p-6">
+          <div className="bg-white/90 rounded-2xl shadow-xl p-2 sm:p-6">
             <h2 className="text-lg font-semibold mb-6">Shipping Information</h2>
 
             {addresses.length > 0 && (
@@ -1571,8 +1571,8 @@ export default function CheckoutPage() {
 
         {/* Order Summary */}
         <div className="w-full md:w-1/3">
-          <div className="bg-white rounded-lg shadow-md p-2 sm:p-6 md:sticky md:top-4">
-            <h2 className="text-lg font-semibold mb-6 text-center sm:text-left">
+          <div className="bg-white/90 rounded-2xl shadow-xl p-2 sm:p-6 md:sticky md:top-4">
+            <h2 className="text-lg font-semibold mb-6 text-center sm:text-left text-black">
               Order Summary
             </h2>
 
