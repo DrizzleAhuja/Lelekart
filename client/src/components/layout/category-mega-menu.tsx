@@ -93,38 +93,33 @@ export function CategoryMegaMenu() {
   );
   
   return (
-    <div className="w-full bg-primary-foreground/20 border-b border-gray-200">
+    <div className="w-full bg-cream border-b border-cream shadow-md z-30 sticky top-14">
       <div className="container mx-auto">
         <div className="flex justify-center">
-          <div className="flex flex-wrap gap-2 py-2">
+          <div className="flex flex-nowrap gap-2 py-2 overflow-x-auto scrollbar-hide">
             {/* Categories with subcategories - shown as dropdowns */}
             {categoriesWithSubcategories.map(category => (
               <DropdownMenu key={category.id}>
-                <DropdownMenuTrigger className="px-4 py-2 text-base font-bold bg-white hover:bg-gray-50 hover:text-primary rounded-lg shadow-sm flex items-center transition-colors duration-150 border border-gray-200">
+                <DropdownMenuTrigger className="px-3 py-2 text-base font-bold bg-offwhite hover:bg-cream hover:text-dark rounded-lg shadow border border-cream flex items-center transition-colors duration-75 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-primary">
                   {category.name}
-                  <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200" />
+                  <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-75 text-dark" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-80 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 mt-2">
+                <DropdownMenuContent align="center" className="w-80 bg-white rounded-xl shadow-2xl border border-cream p-3 mt-2 z-50">
                   {getSubcategoriesForCategory(category.id).map(subcategory => {
                     const subcategory2List = getSubcategory2ForSubcategory(subcategory.id);
                     return (
                       <div key={subcategory.id} className="relative group">
-                        <div className={cn(
-                          "flex items-center w-full px-3 py-2 rounded-lg transition-colors duration-150 cursor-pointer group-hover:bg-gray-50",
-                          expandedSubcategory === subcategory.id ? "bg-gray-50" : ""
-                        )}>
-                          <span
-                            className="flex-1 font-medium text-gray-900"
-                            onClick={() => {
-                              window.location.assign(`/category/${category.slug}?subcategory=${subcategory.slug}`);
-                            }}
-                          >
+                        <div
+                          className={cn(
+                            "flex items-center w-full px-3 py-2 rounded-md transition-colors duration-75 cursor-pointer group-hover:bg-cream hover:bg-cream",
+                            expandedSubcategory === subcategory.id ? "bg-cream" : ""
+                          )}
+                          onMouseEnter={() => setExpandedSubcategory(subcategory.id)}
+                          onMouseLeave={() => setExpandedSubcategory(null)}
+                        >
+                          <span className="flex-1 font-medium text-dark">
                             {subcategory.name}
-                            {subcategory.featured && (
-                              <span className="ml-2 px-1.5 py-0.5 text-[10px] leading-none bg-yellow-100 text-yellow-800 rounded-full">
-                                Featured
-                              </span>
-                            )}
+                            <ChevronDown className="ml-1 h-3 w-3 inline-block text-dark/70 align-middle" />
                           </span>
                           {subcategory2List.length > 0 && (
                             <span
@@ -134,10 +129,10 @@ export function CategoryMegaMenu() {
                                   expandedSubcategory === subcategory.id ? null : subcategory.id
                                 );
                               }}
-                              className={cn(
-                                "ml-2 flex items-center cursor-pointer transition-transform duration-200",
-                                expandedSubcategory === subcategory.id ? "rotate-180 text-primary" : "text-gray-400"
-                              )}
+                             className={cn(
+                               "ml-2 flex items-center cursor-pointer transition-transform duration-200",
+                               expandedSubcategory === subcategory.id ? "rotate-180 text-dark" : "text-dark/60"
+                             )}
                               tabIndex={0}
                               role="button"
                               aria-label="Show subcategories"
@@ -147,12 +142,12 @@ export function CategoryMegaMenu() {
                           )}
                         </div>
                         {/* Inline subcategory2 list, with vertical line and animation */}
-                        {subcategory2List.length > 0 && expandedSubcategory === subcategory.id && (
-                          <div className="pl-7 border-l-2 border-gray-200 ml-2 mt-1 space-y-1 transition-all duration-200">
+                        {expandedSubcategory === subcategory.id && subcategory2List.length > 0 && (
+                          <div className="pl-7 border-l-2 border-cream ml-2 mt-1 space-y-1 transition-all duration-200 bg-white rounded-lg shadow-lg border border-cream">
                             {subcategory2List.map(sub2 => (
                               <div
                                 key={sub2.id}
-                                className="flex items-center px-3 py-1 rounded-md hover:bg-gray-100 cursor-pointer text-sm text-gray-700 transition-colors duration-100"
+                               className="flex items-center px-3 py-1 rounded-md hover:bg-cream cursor-pointer text-sm text-dark transition-colors duration-100"
                                 onClick={e => {
                                   e.stopPropagation();
                                   window.location.assign(`/category/${category.slug}?subcategory=${subcategory.slug}&subcategory2=${sub2.slug}`);
@@ -160,7 +155,7 @@ export function CategoryMegaMenu() {
                               >
                                 <span className="flex-1">{sub2.name}</span>
                                 {sub2.featured && (
-                                  <span className="ml-2 px-1 py-0.5 text-[10px] leading-none bg-yellow-100 text-yellow-800 rounded-full">
+                                 <span className="ml-2 px-1 py-0.5 text-[10px] leading-none bg-blush text-white rounded-full">
                                     Featured
                                   </span>
                                 )}
@@ -171,13 +166,13 @@ export function CategoryMegaMenu() {
                       </div>
                     );
                   })}
-                  <div className="my-2 border-t border-gray-100" />
+                 <div className="my-2 border-t border-cream" />
                   <DropdownMenuItem asChild>
                     <div 
                       onClick={() => {
                         window.location.href = `/category/${category.slug}`;
                       }}
-                      className="cursor-pointer w-full text-center text-primary font-semibold text-base py-2 hover:bg-gray-50 rounded-lg"
+                     className="cursor-pointer w-full text-center text-dark font-semibold text-sm py-2 hover:bg-cream rounded-md"
                     >
                       View All {category.name}
                     </div>
@@ -191,7 +186,7 @@ export function CategoryMegaMenu() {
               <Link 
                 key={category.id} 
                 href={`/category/${category.slug}`}
-                className="px-4 py-2 text-base font-bold bg-white hover:bg-gray-50 hover:text-primary rounded-lg shadow-sm flex items-center border border-gray-200"
+                className="px-3 py-2 text-base font-bold bg-offwhite hover:bg-cream hover:text-dark rounded-lg shadow border border-cream flex items-center whitespace-nowrap"
               >
                 {category.name}
               </Link>

@@ -12,7 +12,7 @@ import { useAuth } from '../../hooks/use-auth';
 
 interface SimpleSearchProps {
   className?: string;
-  variant?: 'default' | 'admin';
+  variant?: 'default' | 'admin' | 'dark';
 }
 
 export function SimpleSearch({ className, variant = 'default' }: SimpleSearchProps = {}) {
@@ -168,41 +168,18 @@ export function SimpleSearch({ className, variant = 'default' }: SimpleSearchPro
     return () => document.removeEventListener('keydown', handleKeyPress);
   }, []);
 
-  // Determine classes based on variant
-  const containerClasses = variant === 'admin'
-    ? "flex items-center border border-gray-200 rounded-md px-3 py-1 bg-white shadow-sm transition-all"
-    : "flex items-center border-2 border-white/30 hover:border-white/50 focus-within:border-white rounded-lg px-4 py-2.5 bg-white/10 backdrop-blur-sm shadow-lg transition-all";
+  // (Removed old const declarations; using let declarations above)
   
-  const iconClasses = variant === 'admin'
-    ? "h-5 w-5 mr-2 text-gray-400"
-    : "h-5 w-5 mr-3 text-white";
-  
-  const inputClasses = variant === 'admin'
-    ? "flex-1 outline-none bg-transparent text-gray-900 placeholder-gray-500 text-sm"
-    : "flex-1 outline-none bg-transparent text-white placeholder-white/70 text-base";
-
-  const clearButtonClasses = variant === 'admin'
-    ? "text-gray-400 hover:text-gray-600"
-    : "text-white/80 hover:text-white";
-  
-  const voiceButtonClasses = variant === 'admin'
-    ? "ml-1 text-gray-400 hover:text-gray-600"
-    : "ml-2 text-white/80 hover:text-white";
-  
-  const searchButtonClasses = variant === 'admin'
-    ? "ml-2 bg-[#2874f0] text-white hover:bg-[#2874f0]/90 font-medium rounded-md px-4 py-1.5"
-    : "ml-3 bg-white text-primary hover:bg-white/90 font-medium rounded-md";
-
   return (
     <div className={cn("relative", className)}>
       <form ref={formRef} onSubmit={handleSearch} className="relative w-full max-w-xl">
-        <div className={containerClasses}>
-          <Search className={iconClasses} />
+        <div className={`flex items-center border-2 border-gray-200 hover:border-gray-400 focus-within:border-primary rounded-lg px-4 py-2.5 bg-cream shadow transition-all`}>
+          <Search className="h-5 w-5 mr-3 text-black" />
           <input
             ref={searchInputRef}
             type="text"
             placeholder={variant === 'admin' ? "Search for products..." : "Search for products, brands and more..."}
-            className={inputClasses}
+            className="flex-1 outline-none bg-transparent text-black placeholder:text-black text-base"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -224,9 +201,10 @@ export function SimpleSearch({ className, variant = 'default' }: SimpleSearchPro
           {query && (
             <button 
               type="button"
-              className={clearButtonClasses}
+              className="text-white/80 hover:text-white"
               onClick={clearSearch}
               disabled={isAiSearching}
+              title="Clear search"
             >
               <X className="h-5 w-5" />
             </button>
@@ -234,7 +212,7 @@ export function SimpleSearch({ className, variant = 'default' }: SimpleSearchPro
           
           {/* Voice search button */}
           <VoiceSearchDialog 
-            className={voiceButtonClasses}
+            className="ml-2 text-black hover:text-black"
             buttonVariant="ghost"
             buttonSize="icon"
             buttonText=""
@@ -244,9 +222,10 @@ export function SimpleSearch({ className, variant = 'default' }: SimpleSearchPro
           
           <Button 
             type="submit" 
-            className={searchButtonClasses}
+            className="ml-3 bg-white text-primary hover:bg-white/90 font-medium rounded-md"
             size="sm"
             disabled={isAiSearching}
+            title="Search"
           >
             Search
           </Button>

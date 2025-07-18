@@ -111,7 +111,7 @@ export const ProductCard = memo(function ProductCard({
 
   // Use the same dimensions and styling for all product cards regardless of featured status
   return (
-    <div className="relative">
+    <div className="relative bg-offwhite border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
       {/* Discount badge - ONLY show for featured deals */}
       {hasDiscount && discountPercent > 0 && (
         <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10 shadow">
@@ -124,7 +124,8 @@ export const ProductCard = memo(function ProductCard({
       {/* Use normalized path that starts with a slash to prevent double slashes */}
       <Link href={`/product/${product.id}`} className="block">
         <Card
-          className="product-card h-full flex flex-col items-center p-3 transition-transform duration-200 hover:cursor-pointer hover:shadow-md hover:-translate-y-1"
+        className="bg-offwhite h-full flex flex-col items-center p-4 transition-transform duration-200 hover:cursor-pointer hover:shadow-lg hover:-translate-y-1 border-none"
+          // className="product-card h-full flex flex-col items-center p-3 transition-transform duration-200 hover:cursor-pointer hover:shadow-md hover:-translate-y-1"
           onClick={() => {
             // Manually add to recently viewed products as backup
             try {
@@ -175,8 +176,11 @@ export const ProductCard = memo(function ProductCard({
             }
           }}
         >
+           {/* <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-white/40 rounded-lg overflow-hidden border border-gray-100"></div> */}
+           {/* <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-white/40 rounded-lg overflow-hidden border border-gray-100"></div> */}
           <CardContent className="p-0 w-full flex flex-col items-center h-full">
-            <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-slate-50 rounded-md overflow-hidden">
+            {/* <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-slate-50 rounded-md overflow-hidden"> */}
+                <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-offwhite rounded-lg overflow-hidden border border-gray-100">
               <ProductImage
                 product={product}
                 className="rounded-sm"
@@ -190,11 +194,11 @@ export const ProductCard = memo(function ProductCard({
                 {product.name}
               </h3>
               <div className="text-green-600 font-medium mt-1 text-center flex items-center justify-center gap-2">
-                {product.gstDetails
+                {product.gstDetails && product.gstDetails.priceWithGst != null
                   ? formatPrice(product.gstDetails.priceWithGst)
                   : formatPrice(product.price)}
                 {/* Show MRP strikethrough only for featured deals with real discounts */}
-                {hasDiscount && product.mrp && (
+                {hasDiscount && typeof product.mrp === 'number' && (
                   <span className="text-gray-400 text-xs line-through ml-2">
                     {formatPrice(product.mrp)}
                   </span>

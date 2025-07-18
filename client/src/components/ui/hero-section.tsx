@@ -372,7 +372,7 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
       {dealOfTheDay && (
         <div className="bg-gray-50 py-6">
           <div className="container mx-auto px-4">
-            <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+            <div className="bg-cream rounded-lg shadow-md border border-gray-200 p-4 md:p-6">
               <div className="flex flex-col md:flex-row">
                 {/* Left side - Deal info */}
                 <div className="md:w-1/2 mb-4 md:mb-0 md:pr-8">
@@ -460,7 +460,7 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
                           : getDealCategory()
                       }
                       alt={dealOfTheDay.title}
-                      className="w-full max-h-48 object-contain bg-slate-50 rounded-md p-2"
+                      className="w-full max-h-48 object-contain bg-cream rounded-lg p-2 border border-gray-100"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;

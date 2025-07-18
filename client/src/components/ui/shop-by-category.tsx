@@ -42,7 +42,7 @@ export function ShopByCategory() {
           {categories.map((category) => (
             <div 
               key={category.id} 
-              className="bg-white rounded-lg p-4 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+              className="bg-offwhite rounded-lg p-4 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
               onClick={() => handleCategoryClick(category.name)}
             >
               <div className="flex flex-col items-center text-center h-full justify-between">

@@ -305,7 +305,7 @@ export default function ProductViewPage() {
             </div>
           </div>
         ) : product ? (
-          <div className="bg-white p-6 rounded shadow-sm">
+          <div className="bg-offwhite p-6 rounded shadow-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Product Image Gallery */}
               <div className="flex justify-center items-start">
@@ -537,7 +537,7 @@ export default function ProductViewPage() {
         {!isRelatedLoading && relatedProducts && relatedProducts.length > 0 && (
           <div className="mt-8">
             <h2 className="text-xl font-medium mb-4">Similar Products</h2>
-            <div className="bg-white p-4 rounded shadow-sm">
+            <div className="bg-offwhite p-4 rounded shadow-sm">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                 {relatedProducts
                   .filter((p) => p.id !== product?.id)

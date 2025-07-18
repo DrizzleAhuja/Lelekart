@@ -93,22 +93,23 @@ export function SimpleHeader() {
   };
 
   return (
-    <header className="bg-orange-400 text-white fixed top-0 left-0 right-0 z-40">
+    <header className="bg-offwhite text-dark fixed top-0 left-0 right-0 z-40 shadow-sm border-b border-cream">
       {/* Desktop Header - with improved padding and spacing */}
-      <div className="container mx-auto px-4 h-14 hidden md:flex md:items-center">
+      <div className="container mx-auto px-4 h-14 hidden md:flex md:items-center font-sans border-b border-cream bg-offwhite">
         <div className="flex items-center justify-between w-full py-2">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
             <Link href="/">
               <div className="flex items-center">
-                <img
-                  src="https://drive.google.com/thumbnail?id=1RNjADzUc3bRdEpavAv5lxcN1P9VLG-PC&sz=w1000"
-                  alt="Lelekart Logo"
-                  className="h-10 w-auto"
-                />
+                <span className="text-3xl md:text-4xl font-serif font-extrabold text-black tracking-widest" style={{letterSpacing: '0.08em', lineHeight: '1', fontFamily: 'Georgia, Times, Times New Roman, serif'}}>
+                  <span style={{letterSpacing: '0.01em'}}>L</span>elekart
+                  <span className="inline-block align-top ml-2 w-2 h-2 rounded-full" style={{background: '#e2bfae', marginTop: '-0.5em'}}></span>
+                </span>
               </div>
             </Link>
             <div className="flex-grow max-w-xl">
-              <SimpleSearch className="z-20" />
+              <div className="bg-cream rounded-lg px-2 py-1 flex items-center border border-gray-300 shadow-sm">
+                <SimpleSearch className="z-20 w-full text-black placeholder:text-black" variant="default" />
+              </div>
             </div>
           </div>
           <div className="flex items-center space-x-5">
@@ -117,7 +118,7 @@ export function SimpleHeader() {
               <Link href="/">
                 <Button
                   variant="ghost"
-                  className="flex items-center py-1 px-2 text-white font-medium rounded-sm hover:bg-primary-foreground/10"
+                  className="flex items-center py-1 px-2 text-dark font-medium rounded-sm hover:bg-cream"
                   style={{ boxShadow: "none", background: "transparent" }}
                 >
                   <HomeIcon className="mr-2 h-4 w-4" />
@@ -129,7 +130,7 @@ export function SimpleHeader() {
               // Show login button for non-authenticated users
               <Button
                 variant="ghost"
-                className="text-white hover:text-white hover:bg-primary-foreground/10 h-10"
+                className="text-dark hover:text-dark hover:bg-cream h-10 font-semibold"
                 onClick={() => setLocation("/auth")}
               >
                 Login
@@ -140,10 +141,10 @@ export function SimpleHeader() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-white flex items-center hover:bg-primary-foreground/10 h-10 px-4"
+                    className="text-dark font-bold flex items-center hover:bg-cream h-10 px-4"
                   >
                     <User className="mr-2 h-4 w-4" />
-                    <span>{user.name || user.username}</span>
+                    <span className="font-bold text-dark">{user.name || user.username}</span>
                     <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -178,13 +179,13 @@ export function SimpleHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-primary-foreground/10 relative h-10 w-10 flex items-center justify-center"
+                className="text-dark hover:bg-cream relative h-10 w-10 flex items-center justify-center"
                 onClick={handleCartClick}
                 title="Shopping Cart"
               >
                 <ShoppingCart className="h-5 w-5" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-yellow-400 text-primary text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-blush text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold shadow">
                     {cartItemCount}
                   </span>
                 )}
@@ -193,6 +194,9 @@ export function SimpleHeader() {
           </div>
         </div>
       </div>
+
+      {/* Add more margin below navbar for categories spacing, especially on mobile */}
+      <div className="w-full bg-transparent" style={{ height: '0.5rem' }} />
 
       {/* Mobile Header with improved spacing */}
       <div className="md:hidden px-4">

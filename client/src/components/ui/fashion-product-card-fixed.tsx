@@ -140,19 +140,19 @@ export function FashionProductCardFixed({
   };
 
   return (
-    <div className="relative">
+    <div className="relative bg-cream border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
       {/* Add Wishlist button on top right of card */}
       <WishlistButton productId={product.id} variant="card" />
 
       <Link href={`/product/${product.id}`} className="block">
         <Card
           className={cn(
-            "h-full flex flex-col items-center p-3 transition-transform duration-200 hover:cursor-pointer hover:shadow-md hover:-translate-y-1",
+            "bg-cream h-full flex flex-col items-center p-4 transition-transform duration-200 hover:cursor-pointer hover:shadow-lg hover:-translate-y-1 border-none",
             className
           )}
         >
           <CardContent className="p-0 w-full flex flex-col items-center h-full">
-            <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-slate-50 rounded-md">
+            <div className="w-full flex-shrink-0 h-40 flex items-center justify-center mb-3 bg-white/40 rounded-lg overflow-hidden border border-gray-100">
               <img
                 src={getImageSrc()}
                 alt={product.name}

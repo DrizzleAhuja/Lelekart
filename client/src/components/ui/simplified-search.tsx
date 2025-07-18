@@ -50,7 +50,7 @@ export function SimplifiedSearch({ className = '' }: SimplifiedSearchProps) {
       <div className="relative flex-1">
         <Input
           type="text"
-          placeholder="Search for products, brands and more"
+          placeholder="Searc for products, brands and more"
           className="w-full pr-10 pl-4 rounded-l-md border-r-0"
           onChange={(e) => debouncedSetQuery(e.target.value)}
           defaultValue={query}

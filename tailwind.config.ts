@@ -11,6 +11,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        // Mood board palette
+        cream: '#f5e8da',
+        offwhite: '#f9f6ee',
+        green: '#b7c6a3',
+        blush: '#cfa39a',
+        dark: '#222222',
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

@@ -340,7 +340,7 @@ export default function HomePage() {
       >
         <div className="container mx-auto px-4 py-6">
           <h2 className="text-2xl font-medium mb-4">Featured Deals</h2>
-          <div className="bg-white p-4 rounded shadow-sm">
+          <div className="bg-cream p-4 rounded shadow-sm">
             {isLoading ? (
               <ProductsLoading />
             ) : (
@@ -389,7 +389,7 @@ export default function HomePage() {
 
               <TabsContent
                 value="all"
-                className="bg-white p-4 rounded shadow-sm"
+                className="bg-cream p-4 rounded shadow-sm"
               >
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-medium">All Products</h2>
@@ -443,7 +443,7 @@ export default function HomePage() {
 
               <TabsContent
                 value="new"
-                className="bg-white p-4 rounded shadow-sm"
+                className="bg-cream p-4 rounded shadow-sm"
               >
                 <div className="text-center py-8">
                   <p>New arrivals coming soon!</p>
@@ -452,7 +452,7 @@ export default function HomePage() {
 
               <TabsContent
                 value="popular"
-                className="bg-white p-4 rounded shadow-sm"
+                className="bg-cream p-4 rounded shadow-sm"
               >
                 <div className="text-center py-8">
                   <p>Popular products feature coming soon!</p>
@@ -469,7 +469,7 @@ export default function HomePage() {
           <h2 className="text-2xl font-medium mb-4 capitalize">
             {category} Products
           </h2>
-          <div className="bg-white p-4 rounded shadow-sm">
+          <div className="bg-cream p-4 rounded shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
               {products.map((product, index) =>
                 category?.toLowerCase() === "fashion" ? (
@@ -564,7 +564,7 @@ function CategorySection({
 
   return (
     <div className="container mx-auto px-4 py-4">
-      <div className="bg-white p-4 rounded shadow-sm">
+      <div className="bg-cream p-4 rounded shadow-sm">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-medium">Top {category}</h2>
           <Link

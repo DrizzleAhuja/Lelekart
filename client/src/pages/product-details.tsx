@@ -1555,7 +1555,7 @@ export default function ProductDetailsPage() {
     <CartProvider>
       <div className="bg-gray-100 min-h-screen">
         {/* Product Header */}
-        <div className="bg-white mb-3">
+        <div className="bg-offwhite mb-3">
           <div className="container mx-auto px-4 py-3">
             <div className="text-sm text-gray-500">
               Home &gt; {product?.category || "Products"} &gt; {product?.name}
@@ -1565,7 +1565,7 @@ export default function ProductDetailsPage() {
 
         {/* Product Details Section */}
         <div className="container mx-auto px-2 sm:px-4">
-          <div className="bg-white rounded shadow-sm mb-3">
+          <div className="bg-offwhite rounded shadow-sm mb-3">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-1">
               {/* Left: Product Images (5/12) */}
               <div className="md:col-span-5 p-2 sm:p-4 border-b md:border-b-0 md:border-r border-gray-100">
@@ -2016,7 +2016,7 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Product Details Tabs */}
-          <div className="bg-white rounded shadow-sm mb-3">
+          <div className="bg-offwhite rounded shadow-sm mb-3">
             <div className="p-2 sm:p-4">
               <Tabs defaultValue="description">
                 <TabsList className="w-full justify-start border-b mb-4 overflow-x-auto whitespace-nowrap">
@@ -2196,7 +2196,7 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Similar Products Recommendation Carousel */}
-          <div className="bg-white rounded shadow-sm mb-3 p-2 sm:p-4">
+          <div className="bg-offwhite rounded shadow-sm mb-3 p-2 sm:p-4">
             {product && (
               <ProductRecommendationCarousel
                 title="Similar Products You May Like"

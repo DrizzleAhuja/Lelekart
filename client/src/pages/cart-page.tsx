@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/hooks/use-auth";
 import { User } from "@shared/schema";
 import { useCart } from "@/context/cart-context";
+import { Card } from "@/components/ui/card";
 
 interface CartItem {
   id: number;
@@ -110,7 +111,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-8">
+    <div className="container mx-auto py-8 px-2 sm:px-4 bg-offwhite">
       <h1 className="text-2xl font-bold mb-8 text-center sm:text-left">
         Shopping Cart
       </h1>
@@ -118,7 +119,7 @@ export default function CartPage() {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Cart Items */}
         <div className="w-full md:w-2/3">
-          <div className="bg-white rounded-lg shadow-md p-2 sm:p-6">
+          <div className="bg-offwhite rounded-lg shadow-md p-2 sm:p-6 border border-gray-200">
             <div className="flow-root">
               <ul className="-my-6 divide-y divide-gray-200">
                 {cartItems.map((item, idx) => (
@@ -263,7 +264,7 @@ export default function CartPage() {
         </div>
         {/* Summary */}
         <div className="w-full md:w-1/3">
-          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 sticky top-24">
+          <div className="bg-offwhite rounded-lg shadow-md p-4 sm:p-6 sticky top-24 border border-gray-200">
             {/* Move Clear Cart button here */}
             <Button
               variant="outline"

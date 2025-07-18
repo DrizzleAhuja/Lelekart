@@ -198,7 +198,7 @@ export function FlipkartSearch({ className = "" }: FlipkartSearchProps) {
             onFocus={() => {
               setShowSuggestions(true); // Always show suggestions on focus
             }}
-            placeholder="Search for products, brands and more"
+            placeholder="Searc for products, brands and more"
             className="w-full h-10 pl-4 pr-10 rounded-l-sm border-2 border-primary focus:outline-none text-gray-800"
             aria-label="Search"
           />

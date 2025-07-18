@@ -52,7 +52,7 @@ export function Header() {
             <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
-                placeholder="Search for Products, brands and more"
+                placeholder="Searc for Products, brands and more"
                 className="w-full py-2 px-4 text-gray-900 rounded-sm focus:outline-none"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}

@@ -359,7 +359,7 @@ export default function ProductPage() {
             </div>
           </div>
         ) : product ? (
-          <div className="bg-white p-6 rounded shadow-sm">
+          <div className="bg-offwhite p-6 rounded shadow-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Product Image Gallery */}
               <div className="flex justify-center items-start">
