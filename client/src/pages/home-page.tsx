@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { ArrowUp } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Memoize categories to prevent unnecessary re-renders
 const allCategories = [
@@ -68,6 +69,164 @@ interface DealOfTheDay {
   minutes: number;
   seconds: number;
   productId?: number;
+}
+
+function useRecentlyViewedProducts() {
+  const [recentlyViewed, setRecentlyViewed] = useState<any[]>([]);
+  useEffect(() => {
+    async function fetchRecentlyViewed() {
+      const ids = JSON.parse(localStorage.getItem("recently_viewed_products") || "[]");
+      if (!Array.isArray(ids) || ids.length === 0) {
+        setRecentlyViewed([]);
+        return;
+      }
+      const res = await fetch(`/api/products?ids=${ids.join(",")}`);
+      if (!res.ok) return setRecentlyViewed([]);
+      const data = await res.json();
+      // Keep the order as in ids
+      const ordered = ids.map((id: number) => (data.products || []).find((p: any) => p.id === id)).filter(Boolean);
+      setRecentlyViewed(ordered);
+    }
+    fetchRecentlyViewed();
+  }, []);
+  return recentlyViewed;
+}
+
+function useBrowsingHistoryProducts() {
+  const [browsingHistory, setBrowsingHistory] = useState<any[]>([]);
+  useEffect(() => {
+    async function fetchBrowsingHistory() {
+      const ids = JSON.parse(localStorage.getItem("browsing_history_products") || "[]");
+      if (!Array.isArray(ids) || ids.length === 0) {
+        setBrowsingHistory([]);
+        return;
+      }
+      const res = await fetch(`/api/products?ids=${ids.join(",")}`);
+      if (!res.ok) return setBrowsingHistory([]);
+      const data = await res.json();
+      // Keep the order as in ids
+      const ordered = ids.map((id: number) => (data.products || []).find((p: any) => p.id === id)).filter(Boolean);
+      setBrowsingHistory(ordered);
+    }
+    fetchBrowsingHistory();
+  }, []);
+  return browsingHistory;
+}
+
+function RecentlyViewedSection() {
+  const [recentlyViewed, setRecentlyViewed] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function fetchRecentlyViewed() {
+      setLoading(true);
+      try {
+        const ids = JSON.parse(localStorage.getItem('recently_viewed_products') || '[]');
+        if (!Array.isArray(ids) || ids.length === 0) {
+          setRecentlyViewed([]);
+          setLoading(false);
+          return;
+        }
+        // Only fetch the latest 5
+        const latestIds = ids.slice(0, 5);
+        const productPromises = latestIds.map(id => 
+          fetch(`/api/products/${id}`).then(res => res.ok ? res.json() : null)
+        );
+        const allProducts = (await Promise.all(productPromises)).filter(Boolean);
+        // Keep the order as in localStorage
+        const ordered = latestIds
+          .map((id) => allProducts.find((p: any) => p.id === id))
+          .filter((p) => p !== undefined && p !== null);
+        setRecentlyViewed(ordered);
+      } catch (e) {
+        setRecentlyViewed([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRecentlyViewed();
+  }, []);
+  return (
+    <div className="container mx-auto py-6 px-4">
+      <h2 className="text-2xl font-medium mb-4">Recently Viewed</h2>
+      {loading ? (
+        <div className="flex items-center justify-center py-8 text-center flex-col">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
+          <h3 className="text-sm font-medium">Loading recently viewed products...</h3>
+        </div>
+      ) : recentlyViewed.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          {recentlyViewed.map((product: any) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center py-8 text-center flex-col">
+          <h3 className="text-sm font-medium">No recently viewed products</h3>
+          <p className="text-xs text-muted-foreground mt-1">Products you view will appear here</p>
+          <Button variant="link" size="sm" className="mt-2" asChild>
+            <Link href="/">Browse Products</Link>
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BrowsingHistorySection() {
+  const [history, setHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function fetchHistory() {
+      setLoading(true);
+      try {
+        // Assume you store search product IDs in localStorage under 'browsing_history_products'
+        const ids = JSON.parse(localStorage.getItem('browsing_history_products') || '[]');
+        if (!Array.isArray(ids) || ids.length === 0) {
+          setHistory([]);
+          setLoading(false);
+          return;
+        }
+        // Only fetch the latest 5
+        const latestIds = ids.slice(0, 5);
+        const productPromises = latestIds.map(id => 
+          fetch(`/api/products/${id}`).then(res => res.ok ? res.json() : null)
+        );
+        const allProducts = (await Promise.all(productPromises)).filter(Boolean);
+        // Keep the order as in localStorage
+        const ordered = latestIds
+          .map((id) => allProducts.find((p: any) => p.id === id))
+          .filter((p) => p !== undefined && p !== null);
+        setHistory(ordered);
+      } catch (e) {
+        setHistory([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHistory();
+  }, []);
+  return (
+    <div className="container mx-auto py-6 px-4">
+      <h2 className="text-2xl font-medium mb-4">Browsing History</h2>
+      {loading ? (
+        <div className="flex items-center justify-center py-8 text-center flex-col">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
+          <h3 className="text-sm font-medium">Loading browsing history...</h3>
+        </div>
+      ) : history.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          {history.map((product: any) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center py-8 text-center flex-col">
+          <h3 className="text-sm font-medium">No browsing history</h3>
+          <p className="text-xs text-muted-foreground mt-1">Products you search for will appear here</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function HomePage() {
@@ -300,6 +459,9 @@ export default function HomePage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const recentlyViewed = useRecentlyViewedProducts();
+  const browsingHistory = useBrowsingHistoryProducts();
+
   return (
     <>
       <Helmet>
@@ -359,18 +521,33 @@ export default function HomePage() {
         </div>
       </LazySection>
 
-      {/* Category Sections - Lazy load each category */}
-      {!category &&
-        allCategories.map((categoryName, index) => (
-          <LazySection
-            key={categoryName}
-            fallback={<CategoryProductsLoading />}
-            threshold={0.1}
-            rootMargin="150px"
-          >
-            <CategorySection category={categoryName} index={index} />
-          </LazySection>
-        ))}
+      {/* Browsing History Section */}
+      <BrowsingHistorySection />
+      {/* Recently Viewed Section */}
+      <RecentlyViewedSection />
+
+      {/* Category Blocks - Amazon style */}
+      {!category && (
+        <div className="container mx-auto px-2 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {allCategories.map((categoryName) => {
+            const products = getProductsByCategory(categoryName).slice(0, 4);
+            if (products.length === 0) return null;
+            return (
+              <div key={categoryName} className="bg-white rounded-2xl shadow-lg p-4 flex flex-col h-full border border-cream hover:shadow-2xl transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-xl font-bold text-gray-800">{categoryName}</h2>
+                  <Link href={`/category/${categoryName.toLowerCase()}`} className="text-primary hover:underline font-medium text-sm">View All</Link>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {products.map((product, idx) => (
+                    <ProductCard key={product.id} product={product} priority={idx < 2} />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* All Products Section - Lazy load with infinite scroll for main page */}
       {!category && (
