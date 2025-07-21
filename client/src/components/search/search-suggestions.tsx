@@ -142,7 +142,21 @@ export function SearchSuggestions({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log("Suggestion clicked:", suggestion);
+                  // Add to browsing history (latest 5, no duplicates)
+                  try {
+                    const key = 'browsing_history_products';
+                    let ids = [];
+                    const existing = localStorage.getItem(key);
+                    if (existing) {
+                      ids = JSON.parse(existing);
+                    }
+                    ids = ids.filter((id) => id !== suggestion.id);
+                    ids.unshift(suggestion.id);
+                    if (ids.length > 5) ids = ids.slice(0, 5);
+                    localStorage.setItem(key, JSON.stringify(ids));
+                  } catch (err) {
+                    // Ignore errors
+                  }
                   // Add a small delay to ensure event handling is complete
                   setTimeout(() => {
                     onSelect(suggestion);

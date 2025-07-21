@@ -527,21 +527,21 @@ export default function CategoryPage() {
         <div className="flex items-center justify-between mb-4">
           <span className="text-lg font-semibold text-gray-700">Show filter</span>
         </div>
-        {isLoading ? (
+      {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {Array(8)
-              .fill(0)
-              .map((_, i) => (
+            .fill(0)
+            .map((_, i) => (
                 <div key={i} className="aspect-square bg-white rounded-xl shadow-md flex items-center justify-center">
                   <Skeleton className="h-24 w-24 rounded" />
-                </div>
-              ))}
-          </div>
-        ) : filteredProducts.length > 0 ? (
+              </div>
+            ))}
+        </div>
+      ) : filteredProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product: Product) => (
               <div
-                key={product.id}
+                  key={product.id}
                 className="aspect-square bg-white rounded-xl shadow-md flex flex-col items-center justify-center p-4 hover:shadow-xl transition cursor-pointer"
                 onClick={() => setLocation(`/products/${product.id}`)}
               >
@@ -569,50 +569,50 @@ export default function CategoryPage() {
               )}
             </p>
           </div>
-        )}
-      </div>
+            )}
+          </div>
 
-      {/* Pagination component */}
-      {pagination && pagination.totalPages > 1 && (
-        <Pagination
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
-          onPageChange={(page) => {
-            // Get current params and preserve them (like limit)
-            const params = new URLSearchParams(
-              location.split("?")[1] || ""
-            );
+          {/* Pagination component */}
+          {pagination && pagination.totalPages > 1 && (
+            <Pagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+              onPageChange={(page) => {
+                // Get current params and preserve them (like limit)
+                const params = new URLSearchParams(
+                  location.split("?")[1] || ""
+                );
 
-            // Update the page parameter
-            params.set("page", page.toString());
+                // Update the page parameter
+                params.set("page", page.toString());
 
-            // Make sure limit parameter is preserved
-            if (!params.has("limit") && itemsPerPage !== 10) {
-              params.set("limit", itemsPerPage.toString());
-            }
+                // Make sure limit parameter is preserved
+                if (!params.has("limit") && itemsPerPage !== 10) {
+                  params.set("limit", itemsPerPage.toString());
+                }
 
-            // Build new URL with category and params
-            const newUrl = `/category/${categoryName}?${params.toString()}`;
-            console.log(`Navigating to: ${newUrl}`);
+                // Build new URL with category and params
+                const newUrl = `/category/${categoryName}?${params.toString()}`;
+                console.log(`Navigating to: ${newUrl}`);
 
-            // Update the page
-            setCurrentPage(page);
+                // Update the page
+                setCurrentPage(page);
 
-            // Update location
-            setLocation(newUrl);
+                // Update location
+                setLocation(newUrl);
 
-            // Scroll to top when page changes
-            window.scrollTo(0, 0);
-          }}
-        />
-      )}
+                // Scroll to top when page changes
+                window.scrollTo(0, 0);
+              }}
+            />
+          )}
 
-      {/* Results count */}
-      <div className="text-sm text-gray-500 text-center mt-2">
-        Showing {(pagination.currentPage - 1) * itemsPerPage + 1} to{" "}
-        {Math.min(pagination.currentPage * itemsPerPage, pagination.total)}{" "}
-        of {pagination.total} products
-      </div>
+          {/* Results count */}
+          <div className="text-sm text-gray-500 text-center mt-2">
+            Showing {(pagination.currentPage - 1) * itemsPerPage + 1} to{" "}
+            {Math.min(pagination.currentPage * itemsPerPage, pagination.total)}{" "}
+            of {pagination.total} products
+          </div>
     </>
   );
 }

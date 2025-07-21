@@ -268,7 +268,7 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
   return (
     <>
       {/* Main hero slider */}
-      <div className="relative overflow-hidden bg-[#f5e7d4] shadow-lg rounded-xl" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] shadow-2xl rounded-2xl border border-cream" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <div
           ref={sliderRef}
           className="flex transition-transform duration-500 ease-in-out min-h-[340px] md:min-h-[420px]"
@@ -280,22 +280,22 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
               className="w-full flex-shrink-0 cursor-pointer"
               onClick={() => handleSlideClick(image)}
             >
-              <div className="container mx-auto px-4 py-8 md:py-16 flex flex-col md:flex-row items-center">
+              <div className="container mx-auto px-4 py-10 md:py-20 flex flex-col md:flex-row items-center">
                 {/* Content area */}
                 <div className="md:w-1/2 text-black mb-8 md:mb-0 md:pr-8">
                   {image.badgeText && (
-                    <span className="bg-yellow-400 text-black text-xs font-semibold px-3 py-1 rounded-md uppercase shadow">
+                    <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs font-bold px-4 py-1 rounded-full uppercase shadow-lg border border-white">
                       {image.badgeText}
                     </span>
                   )}
-                  <h2 className="text-3xl md:text-5xl font-extrabold mt-4 leading-tight drop-shadow-sm">
+                  <h2 className="text-4xl md:text-6xl font-extrabold mt-6 leading-tight drop-shadow-xl text-black/90">
                     {image.title || "Summer Sale Collection"}
                   </h2>
-                  <p className="mt-4 text-lg md:text-xl opacity-90 max-w-md text-black/80">
+                  <p className="mt-6 text-xl md:text-2xl opacity-90 max-w-md text-black/80 font-medium drop-shadow-sm">
                     {image.subtitle || "Up to 50% off on all summer essentials"}
                   </p>
                   <Button
-                    className="mt-6 bg-black text-white hover:bg-gray-900 shadow-lg rounded-full px-8 py-3 text-lg font-semibold transition"
+                    className="mt-8 bg-gradient-to-r from-orange-400 to-yellow-400 text-black font-extrabold rounded-full px-10 py-4 text-xl shadow-xl hover:from-yellow-400 hover:to-orange-400 transition-transform duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSlideClick(image);
@@ -305,7 +305,7 @@ export function HeroSection({ sliderImages, dealOfTheDay }: HeroSectionProps) {
                   </Button>
                 </div>
 
-                {/* Image area */}
+                {/* Image area remains unchanged for now */}
                 <div className="md:w-1/2 flex justify-center items-center">
                   <img
                     src={

@@ -111,7 +111,7 @@ export const ProductCard = memo(function ProductCard({
 
   // Use the same dimensions and styling for all product cards regardless of featured status
   return (
-    <div className="relative bg-[#f5e7d4]">
+    <div className="relative">
       {/* Discount badge - ONLY show for featured deals */}
       {hasDiscount && discountPercent > 0 && (
         <div className="absolute top-3 left-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-3 py-1 rounded-full z-10 shadow-lg border border-white">
@@ -121,9 +121,8 @@ export const ProductCard = memo(function ProductCard({
       {/* Add Wishlist button on top right of card */}
       <WishlistButton productId={product.id} variant="card" />
 
-      {/* Use normalized path that starts with a slash to prevent double slashes */}
       <Card
-        className="bg-white/80 h-full flex flex-col items-center p-5 transition-transform duration-200 hover:cursor-pointer border-none rounded-2xl shadow-xl border border-black/10"
+        className="bg-white h-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer"
         onClick={() => {
             // Manually add to recently viewed products as backup
             try {
@@ -176,21 +175,21 @@ export const ProductCard = memo(function ProductCard({
             setLocation(`/products/${product.id}`);
           }}
       >
-        <CardContent className="p-0 w-full flex flex-col items-center h-full">
-          <div className="w-full flex-shrink-0 h-44 flex items-center justify-center mb-4 bg-white rounded-xl overflow-hidden border border-yellow-200 group-hover:border-orange-300 transition-all">
+        <CardContent className="p-0 w-full flex flex-col items-stretch h-full">
+          <div className="w-full h-44 flex items-center justify-center bg-white rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all">
             <ProductImage
               product={product}
-              className="rounded-sm"
+              className="object-contain max-h-40 w-auto h-auto"
               priority={shouldPrioritize}
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
             />
           </div>
 
-          <div className="flex flex-col flex-grow w-full">
-            <h3 className="font-semibold text-center text-base line-clamp-2 h-12 text-black group-hover:text-primary transition-colors">
+          <div className="flex flex-col flex-grow w-full px-3 py-2">
+            <h3 className="font-semibold text-left text-base line-clamp-2 min-h-[40px] text-black group-hover:text-primary transition-colors">
               {product.name}
             </h3>
-            <div className="text-green-700 font-bold mt-1 text-center flex items-center justify-center gap-2 text-lg">
+            <div className="text-green-700 font-bold mt-1 text-left flex items-center gap-2 text-lg">
               {product.gstDetails && product.gstDetails.priceWithGst != null
                 ? formatPrice(product.gstDetails.priceWithGst)
                 : formatPrice(product.price)}
@@ -201,18 +200,20 @@ export const ProductCard = memo(function ProductCard({
                 </span>
               )}
             </div>
-            <div className="text-xs text-gray-500 mt-2 text-center line-clamp-2 min-h-[32px]">
+            <div className="text-xs text-gray-500 mt-2 text-left line-clamp-2 min-h-[32px]">
               {stripHtmlTags(product.description).slice(0, 50)}...
             </div>
+            {showAddToCart && (
             <Button
-              variant="ghost"
-              size="lg"
-              className="mt-4 w-full text-black bg-gradient-to-r from-yellow-400 to-orange-500 font-extrabold rounded-full shadow-lg hover:from-orange-500 hover:to-yellow-400 transition-transform duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
-              onClick={e => { handleAddToCart(e); e.currentTarget.classList.add('animate-pulse'); setTimeout(() => e.currentTarget.classList.remove('animate-pulse'), 300); }}
+                variant="outline"
+                size="sm"
+                className="mt-3 w-full text-primary font-bold rounded border border-orange-300 bg-gradient-to-r from-yellow-50 to-orange-50 hover:from-orange-100 hover:to-yellow-100 shadow-sm"
+                onClick={e => { handleAddToCart(e); e.stopPropagation(); }}
             >
               <ShoppingCart className="h-5 w-5 mr-2" />
               Add to Cart
             </Button>
+            )}
           </div>
         </CardContent>
       </Card>

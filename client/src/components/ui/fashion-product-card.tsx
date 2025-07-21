@@ -97,7 +97,7 @@ export function FashionProductCard({ product }: FashionProductCardProps) {
             </div>
             <div className="text-xs text-gray-500 mt-1 text-center line-clamp-1">{stripHtmlTags(product.description).slice(0, 30)}...</div>
           </div>
-          <Button
+          <Button 
             variant="ghost"
             size="lg"
             className="mt-4 w-full text-black bg-gradient-to-r from-yellow-400 to-orange-500 font-extrabold rounded-full shadow-lg hover:from-orange-500 hover:to-yellow-400 transition-transform duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"

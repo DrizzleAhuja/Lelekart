@@ -54,6 +54,8 @@ export function SimpleHeader() {
     },
     staleTime: 60000, // 1 minute
     refetchOnWindowFocus: false,
+    refetchOnMount: false, // Prevent refetch on mount
+    placeholderData: () => queryClient.getQueryData(["/api/user"]) || null, // Use cached user data instantly
   });
 
   // Get cart item count for notification badge (from context)
@@ -100,207 +102,106 @@ export function SimpleHeader() {
   };
 
   return (
-    <header className="bg-offwhite text-black sticky top-0 left-0 right-0 z-50 shadow-lg border-b border-cream font-sans" style={{fontFamily: 'Inter, Poppins, Arial, sans-serif'}}>
-      {/* Desktop Header - with improved padding and spacing */}
-      <div className="container mx-auto px-4 h-16 hidden md:flex md:items-center">
-        <div className="flex items-center justify-between w-full py-2">
-          <div className="flex items-center space-x-6">
-            <Link href="/">
-              <div className="flex items-center gap-2">
-                {/* <img src="https://drive.google.com/thumbnail?id=1RNjADzUc3bRdEpavAv5lxcN1P9VLG-PC&sz=w1000" alt="Lelekart Logo" className="h-10 w-auto rounded-lg shadow-md border border-gray-200 bg-[#f5e7d4] p-1" /> */}
-                <span className="text-3xl font-extrabold tracking-tight text-black">Lelekart</span>
-              </div>
-            </Link>
-            <div className="flex-grow max-w-xl">
-              <div className="bg-offwhite  px-3 py-1 flex items-center border border-cream shadow-inner">
-                <SimpleSearch className="z-20 w-full text-black placeholder:text-gray-500" variant="default" />
-              </div>
+    <header className="bg-gradient-to-r from-[#f5e7d4] via-[#fff8f1] to-[#f5e7d4] text-black sticky top-0 left-0 right-0 z-50 shadow-xl border-b border-cream font-sans m-0 p-0 backdrop-blur-md">
+      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        {/* Logo Area */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="text-3xl font-extrabold tracking-tight text-primary drop-shadow-lg group-hover:scale-105 transition-transform duration-200" style={{textShadow: '0 2px 8px #ffe7b8'}}>Lelekart</span>
+        </Link>
+        {/* Navigation Links */}
+        <nav className="flex gap-6 items-center justify-center py-2 mr-2 ml-9">
+          <a href="/about-us" className="font-semibold text-gray-800 hover:text-primary transition-colors">About</a>
+          <a href="/contact" className="font-semibold text-gray-800 hover:text-primary transition-colors">Contact</a>
+          <a href="/faq" className="font-semibold text-gray-800 hover:text-primary transition-colors">FAQ</a>
+        </nav>
+        {/* Search Bar */}
+        <div className="flex-1 flex justify-center mx-2">
+          <div className="w-full max-w-lg">
+            <div className="bg-cream rounded-full shadow-md flex items-center border border-cream focus-within:ring-2 focus-within:ring-primary/30 transition-all">
+              <SimpleSearch className="w-full text-black placeholder:text-gray-500 px-4 py-2 rounded-full bg-transparent" variant="default" />
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            {/* Hide Home button on home page */}
-            {location !== "/" && (
-              <Link href="/">
-                <Button
-                  variant="ghost"
-                  className="flex items-center py-1 px-2 text-dark font-medium rounded-sm hover:bg-cream"
-                  style={{ boxShadow: "none", background: "transparent" }}
-                >
-                  <HomeIcon className="mr-2 h-4 w-4" />
-                  <span>Home</span>
-                </Button>
-              </Link>
-            )}
-            {!user ? (
-              <a href="/auth" className="flex items-center py-2 px-5 bg-primary text-white font-semibold rounded-full shadow hover:bg-primary/90 transition">
-                <User className="mr-2 h-5 w-5" />
-                <span>Login</span>
-              </a>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center py-2 px-5 bg-gray-100 text-primary font-semibold rounded-full shadow hover:bg-gray-200 transition">
-                    <span>{user.name || user.username}</span>
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-60">
-                  <DropdownMenuItem asChild>
-                    <Link href={getDashboardLink()} className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" /> 
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-                    <span className="mr-2">🚪</span> Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-            <button
-              onClick={handleCartClick}
-              className="relative p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition shadow"
-              title="Shopping Cart"
-            >
-              <ShoppingCart className="h-6 w-6 text-primary" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow">
-                  {cartItemCount}
-                </span>
-              )}
-            </button>
-          </div>
         </div>
-      </div>
-
-      {/* Remove or reduce margin below navbar for categories spacing */}
-      {/* No extra div or margin here, category menu should appear immediately below */}
-
-      {/* Mobile Header with improved spacing */}
-      <div className="md:hidden px-4">
-        <div className="h-14 flex items-center justify-between">
-          <div className="flex items-center">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-white hover:text-gray-200 mr-3 p-1"
-              title="Open menu"
-            >
-              <Menu size={24} />
-            </button>
-
-            <Link href="/">
-              <div className="flex items-center">
-                <img
-                  src="https://drive.google.com/thumbnail?id=1RNjADzUc3bRdEpavAv5lxcN1P9VLG-PC&sz=w1000"
-                  alt="Lelekart Logo"
-                  className="h-8 w-auto"
-                />
-              </div>
-            </Link>
-            {location !== "/" && (
-              <Link href="/">
-                <Button
-                  variant="ghost"
-                  className="flex items-center py-1 px-2 text-white font-medium rounded-sm hover:bg-primary-foreground/10"
-                  style={{ boxShadow: "none", background: "transparent" }}
-                >
-                  <HomeIcon className="mr-2 h-4 w-4" />
-                  <span>Home</span>
+        {/* User & Cart Area */}
+        <div className="flex items-center gap-4">
+          {!user ? (
+            <a href="/auth" className="flex items-center py-2 px-5 bg-primary text-white font-semibold rounded-full shadow hover:bg-primary/90 transition">
+              <User className="mr-2 h-5 w-5" />
+              <span>Login</span>
+            </a>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center py-2 px-5 bg-gray-100 text-primary font-semibold rounded-full shadow hover:bg-gray-200 transition">
+                  <span>{user.name || user.username}</span>
+                  <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
-              </Link>
-            )}
-          </div>
-
-          {(!user || user.role === "buyer") && (
-            <button
-              onClick={handleCartClick}
-              className="text-white hover:text-gray-200 relative p-1"
-              title="Shopping Cart"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-yellow-400 text-primary text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-60">
+                <DropdownMenuItem asChild>
+                  <Link href={getDashboardLink()} className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" /> 
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                  <span className="mr-2">🚪</span> Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
+          <button
+            onClick={handleCartClick}
+            className="relative p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition shadow-lg border-2 border-primary"
+            title="Shopping Cart"
+          >
+            <ShoppingCart className="h-7 w-7 text-primary" />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-white shadow">
+                {cartItemCount}
+              </span>
+            )}
+          </button>
         </div>
+        {/* Hamburger for mobile */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden ml-4 p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition shadow"
+          title="Open menu"
+        >
+          <Menu size={28} />
+        </button>
       </div>
-
-      {/* Mobile Search - in a separate fixed position below the header */}
-      <div className="md:hidden fixed top-14 left-0 right-0 bg-orange-400 px-4 pb-3 pt-1 z-40 shadow-md">
-        <SimpleSearch />
-      </div>
-
-      {/* Mobile Menu */}
+      {/* Mobile Menu Slide-in */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50">
-          <div className="bg-orange-400 h-full w-3/4 max-w-xs p-5">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex">
+          <div className="bg-white h-full w-4/5 max-w-xs p-6 shadow-2xl animate-slide-in-left flex flex-col">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold">Menu</h2>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-white hover:text-gray-200 p-1"
-                title="Close menu"
-              >
-                <X size={24} />
+              <span className="text-2xl font-extrabold text-primary">Menu</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-1 rounded-full hover:bg-primary/10" title="Close menu">
+                <X size={28} />
               </button>
             </div>
-
-            <nav className="space-y-4">
-              {location !== "/" && (
-                <button
-                  onClick={() => navigateTo("/")}
-                  className="block w-full text-left py-3 border-b border-primary-foreground/20"
-                >
-                  Home
-                </button>
-              )}
-
+            <nav className="flex flex-col gap-4">
+              <Link href="/about-us" className="text-lg font-semibold py-2 px-3 rounded hover:bg-primary/10 hover:text-primary transition">About</Link>
+              <Link href="/contact" className="text-lg font-semibold py-2 px-3 rounded hover:bg-primary/10 hover:text-primary transition">Contact</Link>
+              <Link href="/faq" className="text-lg font-semibold py-2 px-3 rounded hover:bg-primary/10 hover:text-primary transition">FAQ</Link>
               {!user ? (
-                <button
-                  onClick={() => navigateTo("/auth")}
-                  className="block w-full text-left py-3 border-b border-primary-foreground/20"
-                >
-                  Login
-                </button>
+                <button onClick={() => navigateTo("/auth")}
+                  className="w-full text-left py-2 px-3 rounded bg-primary text-white font-semibold mt-4">Login</button>
               ) : (
                 <>
-                  <button
-                    onClick={() =>
-                      navigateTo(
-                        user.role === "admin"
-                          ? "/admin"
-                          : user.role === "seller"
-                            ? "/seller/dashboard"
-                            : "/buyer/dashboard"
-                      )
-                    }
-                    className="block w-full text-left py-3 border-b border-primary-foreground/20"
-                  >
-                    Dashboard
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left py-3 border-b border-primary-foreground/20"
-                  >
-                    Logout
-                  </button>
+                  <button onClick={() => navigateTo(getDashboardLink())}
+                    className="w-full text-left py-2 px-3 rounded bg-gray-100 text-primary font-semibold mt-4">Dashboard</button>
+                  <button onClick={handleLogout}
+                    className="w-full text-left py-2 px-3 rounded bg-red-100 text-red-700 font-semibold mt-2">Logout</button>
                 </>
               )}
-
-              {(!user || user.role === "buyer") && (
-                <button
-                  onClick={handleCartClick}
-                  className="block w-full text-left py-3 border-b border-primary-foreground/20"
-                  title="Shopping Cart"
-                >
-                  Cart {cartItemCount > 0 && `(${cartItemCount})`}
-                </button>
-              )}
+              <button onClick={handleCartClick}
+                className="w-full text-left py-2 px-3 rounded bg-yellow-100 text-yellow-800 font-semibold mt-2">Cart {cartItemCount > 0 && `(${cartItemCount})`}</button>
             </nav>
           </div>
+          <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
         </div>
       )}
     </header>

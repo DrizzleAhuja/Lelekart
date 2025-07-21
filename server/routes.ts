@@ -7944,6 +7944,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ADD THIS ENDPOINT
+  app.get("/api/subcategories/all", async (_req, res) => {
+    try {
+      const subcategories = await storage.getAllSubcategories();
+      res.json(subcategories);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+      res.status(500).json({ error: "Failed to fetch subcategories" });
+    }
+  });
+
   app.get("/api/categories/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);

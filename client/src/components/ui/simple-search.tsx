@@ -173,7 +173,7 @@ export function SimpleSearch({ className, variant = 'default' }: SimpleSearchPro
   return (
     <div className={cn("relative", className)}>
       <form ref={formRef} onSubmit={handleSearch} className="relative w-full max-w-xl">
-        <div className={`flex items-center border-2 border-gray-200 hover:border-gray-400 focus-within:border-primary rounded-lg px-4 py-2.5 bg-cream shadow transition-all`}>
+        <div className={`flex items-center border-2 border-gray-200 hover:border-gray-400 focus-within:border-primary rounded-lg px-4 py-2.5 bg-gradient-to-r from-[#f5e7d4] via-[#fff8f1] to-[#f5e7d4] shadow transition-all`}>
           <Search className="h-5 w-5 mr-3 text-black" />
           <input
             ref={searchInputRef}
@@ -222,7 +222,7 @@ export function SimpleSearch({ className, variant = 'default' }: SimpleSearchPro
           
           <Button 
             type="submit" 
-            className="ml-3 bg-white text-primary hover:bg-white/90 font-medium rounded-md"
+            className="ml-3 bg-primary text-white hover:bg-primary/90 font-medium rounded-md"
             size="sm"
             disabled={isAiSearching}
             title="Search"

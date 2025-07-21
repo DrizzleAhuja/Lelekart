@@ -246,6 +246,13 @@ export function Header() {
             </Button>
           </nav>
 
+          {/* Add this block at the top of the header, before or after the logo as appropriate */}
+          <nav className="flex gap-6 items-center justify-center py-2">
+            <a href="/about-us" className="font-semibold text-gray-800 hover:text-primary transition-colors">About</a>
+            <a href="/contact" className="font-semibold text-gray-800 hover:text-primary transition-colors">Contact</a>
+            <a href="/faq" className="font-semibold text-gray-800 hover:text-primary transition-colors">FAQ</a>
+          </nav>
+
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center ml-auto">
             {user && (
