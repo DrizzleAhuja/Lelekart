@@ -130,7 +130,7 @@ export const ProductCard = memo(function ProductCard({
       <Card
         className={
           compact
-            ? "bg-white h-[260px] w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
+            ? "bg-white w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
             : "bg-white h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
         }
         onClick={() => {
@@ -185,7 +185,7 @@ export const ProductCard = memo(function ProductCard({
             setLocation(`/products/${product.id}`);
           }}
       >
-        <CardContent className={compact ? "p-0 w-full flex flex-col items-stretch h-full" : "p-0 w-full flex flex-col items-stretch h-full"}>
+        <CardContent className={compact ? "p-0 w-full flex flex-col items-stretch" : "p-0 w-full flex flex-col items-stretch h-full"}>
           <div className={compact ? "w-full h-32 flex items-center justify-center bg-white rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all" : "w-full h-44 flex items-center justify-center bg-white rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all"}>
             <ProductImage
               product={product}
@@ -195,11 +195,11 @@ export const ProductCard = memo(function ProductCard({
             />
           </div>
 
-          <div className={compact ? "flex flex-col flex-grow w-full px-2 py-2" : "flex flex-col flex-grow w-full px-3 py-2"}>
+          <div className={compact ? "flex flex-col w-full px-2" : "flex flex-col flex-grow w-full px-3 py-2"}>
             <h3 className={compact ? "font-semibold text-left text-sm line-clamp-2 min-h-[32px] text-black group-hover:text-primary transition-colors" : "font-semibold text-left text-base line-clamp-2 min-h-[40px] text-black group-hover:text-primary transition-colors"}>
               {product.name}
             </h3>
-            <div className={compact ? "text-green-700 font-bold mt-1 text-left flex items-center gap-2 text-base" : "text-green-700 font-bold mt-1 text-left flex items-center gap-2 text-lg"}>
+            <div className={compact ? "text-green-700 font-bold text-left flex items-center gap-2 text-base" : "text-green-700 font-bold mt-1 text-left flex items-center gap-2 text-lg"}>
               {product.gstDetails && product.gstDetails.priceWithGst != null
                 ? formatPrice(product.gstDetails.priceWithGst)
                 : formatPrice(product.price)}
@@ -210,11 +210,9 @@ export const ProductCard = memo(function ProductCard({
                 </span>
               )}
             </div>
-            <div className={compact ? "text-xs text-gray-500 mt-1 text-left line-clamp-1 min-h-[20px]" : "text-xs text-gray-500 mt-2 text-left line-clamp-2 min-h-[32px]"}>
-              {stripHtmlTags(product.description).slice(0, compact ? 30 : 50)}...
-            </div>
             {/* Only show Add to Cart if not compact and showAddToCart is true */}
-            {showAddToCart && !compact && (
+            {/* No extra div or spacing below price for compact */}
+            {!compact && showAddToCart && (
               <Button
                 variant="outline"
                 size="sm"
