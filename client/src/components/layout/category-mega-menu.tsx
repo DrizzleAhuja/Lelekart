@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 type Category = {
   id: number;
@@ -40,7 +40,9 @@ export function CategoryMegaMenu() {
   const [expandedSubcategory, setExpandedSubcategory] = useState<number | null>(null);
   const categoriesCache = useRef<Category[] | null>(null);
   const subcategoriesCache = useRef<Subcategory[] | null>(null);
-  
+  // New: Store product images for each category
+  const [categoryImages, setCategoryImages] = useState<Record<number, string>>({});
+
   // Fetch categories
   const { data: categoriesRaw, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
@@ -51,6 +53,39 @@ export function CategoryMegaMenu() {
     queryKey: ["/api/subcategories/all"],
   });
   
+  // Fetch one product per category for images (batch update for speed)
+  useEffect(() => {
+    if (!categoriesRaw) return;
+    const fetchImages = async () => {
+      const updates: Record<number, string> = {};
+      await Promise.all(categoriesRaw.map(async (category) => {
+        if (!category.active) return;
+        try {
+          const res = await fetch(`/api/products?category=${encodeURIComponent(category.name)}&limit=1&approved=true&status=approved`);
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data.products && data.products.length > 0) {
+            const product = data.products[0];
+            let imageUrl = product.imageUrl || product.image_url;
+            if (!imageUrl && product.images) {
+              try {
+                const parsed = typeof product.images === "string" ? JSON.parse(product.images) : product.images;
+                if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0];
+              } catch {}
+            }
+            if (imageUrl) {
+              updates[category.id] = imageUrl;
+            }
+          }
+        } catch {}
+      }));
+      if (Object.keys(updates).length > 0) {
+        setCategoryImages((prev) => ({ ...prev, ...updates }));
+      }
+    };
+    fetchImages();
+  }, [categoriesRaw]);
+
   // Cache categories/subcategories after first fetch
   if (categoriesRaw && !categoriesCache.current) categoriesCache.current = categoriesRaw;
   if (subcategoriesRaw && !subcategoriesCache.current) subcategoriesCache.current = subcategoriesRaw;
@@ -111,9 +146,9 @@ export function CategoryMegaMenu() {
               console.log('category', category);
               console.log('subcategories', subcategories);
               console.log('subcats for this category', subcats);
-              // Try to use category.image, else fallback to /images/categories/{slug}.svg, and special fallback for Health & Wellness
-              let imageUrl = category.image || `/images/categories/${category.slug || category.name.toLowerCase()}.svg`;
-              if ((category.slug === 'health-wellness' || category.name.toLowerCase().includes('health')) && !category.image) {
+              // Try to use product image, else fallback to category.image, else fallback to SVG
+              let imageUrl = categoryImages[category.id] || category.image || `/images/categories/${category.slug || category.name.toLowerCase()}.svg`;
+              if ((category.slug === 'health-wellness' || category.name.toLowerCase().includes('health')) && !categoryImages[category.id] && !category.image) {
                 imageUrl = '/images/categories/health-wellness.svg';
               }
               return (

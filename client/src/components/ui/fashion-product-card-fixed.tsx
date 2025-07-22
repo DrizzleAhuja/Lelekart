@@ -162,7 +162,7 @@ export function FashionProductCardFixed({
             </div>
 
             <div className="flex flex-col flex-grow w-full">
-              <h3 className="font-medium text-center text-sm line-clamp-2 h-10">
+              <h3 className="font-semibold text-center text-lg leading-tight line-clamp-2 h-12 text-black group-hover:text-primary transition-colors">
                 {product.name}
               </h3>
               <div className="text-green-600 font-medium mt-1 text-center flex items-center justify-center gap-2">

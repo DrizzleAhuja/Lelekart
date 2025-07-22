@@ -152,8 +152,8 @@ export function SimpleHeader() {
           )}
           <button
             onClick={handleCartClick}
-            className="relative p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition shadow-lg border-2 border-primary"
-            title="Shopping Cart"
+            className="relative p-2"
+            title="Shopping Cart" 
           >
             <ShoppingCart className="h-7 w-7 text-primary" />
             {cartItemCount > 0 && (

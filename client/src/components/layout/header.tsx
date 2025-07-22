@@ -233,16 +233,18 @@ export function Header() {
 
             <Button
               variant="link"
-              className="text-white flex items-center hover:text-gray-200 relative"
+              className="text-white flex items-center hover:text-gray-200 relative p-0 m-0 bg-transparent border-none shadow-none"
               onClick={handleCartClick}
             >
-              <ShoppingCart className="h-5 w-5" />
+              <span className="relative">
+                <ShoppingCart className="h-6 w-6" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-yellow-400 text-primary text-xs rounded-full px-1.5 py-0.5 min-w-[18px] h-5 flex items-center justify-center border border-white shadow">
+                    {cartItemCount}
+                  </span>
+                )}
+              </span>
               <span className="ml-1">Cart</span>
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-yellow-400 text-primary text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
             </Button>
           </nav>
 
@@ -263,15 +265,17 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white"
+              className="text-white p-0 m-0 bg-transparent border-none shadow-none"
               onClick={handleCartClick}
             >
-              <ShoppingCart className="h-6 w-6" />
-              {cartItemCount > 0 && (
-                <span className="absolute top-1 right-1 bg-yellow-400 text-primary text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
+              <span className="relative">
+                <ShoppingCart className="h-6 w-6" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-yellow-400 text-primary text-xs rounded-full px-1.5 py-0.5 min-w-[16px] h-4 flex items-center justify-center border border-white shadow">
+                    {cartItemCount}
+                  </span>
+                )}
+              </span>
             </Button>
             <Button
               variant="ghost"

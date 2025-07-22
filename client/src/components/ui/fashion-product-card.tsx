@@ -90,7 +90,7 @@ export function FashionProductCard({ product }: FashionProductCardProps) {
             />
           </div>
           <div className="flex flex-col flex-grow w-full">
-            <h3 className="font-semibold text-center text-base line-clamp-2 h-12 text-black group-hover:text-primary transition-colors">
+            <h3 className="font-semibold text-center text-lg leading-tight line-clamp-2 h-12 text-black group-hover:text-primary transition-colors">
               {product.name}
             </h3>
             <div className="text-green-700 font-bold mt-1 text-center flex items-center justify-center gap-2 text-lg">

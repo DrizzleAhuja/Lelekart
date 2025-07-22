@@ -198,7 +198,7 @@ export const ProductCard = memo(function ProductCard({
           </div>
 
           <div className={compact ? "flex flex-col w-full px-2" : "flex flex-col flex-grow w-full px-3 py-2"}>
-            <h3 className={compact ? "font-semibold text-left text-sm line-clamp-2 min-h-[32px] text-black group-hover:text-primary transition-colors" : "font-semibold text-left text-base line-clamp-2 min-h-[40px] text-black group-hover:text-primary transition-colors"}>
+            <h3 className={compact ? "font-semibold text-left text-base leading-tight line-clamp-2 min-h-[36px] text-black group-hover:text-primary transition-colors" : "font-semibold text-left text-lg leading-tight line-clamp-2 min-h-[44px] text-black group-hover:text-primary transition-colors"}>
               {product.name}
             </h3>
             <div className={compact ? "text-green-700 font-bold text-left flex items-center gap-2 text-base" : "text-green-700 font-bold mt-1 text-left flex items-center gap-2 text-lg"}>
