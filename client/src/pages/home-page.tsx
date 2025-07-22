@@ -154,7 +154,7 @@ function RecentlyViewedSection() {
           <h3 className="text-sm font-medium">Loading recently viewed products...</h3>
         </div>
       ) : recentlyViewed.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 overflow-hidden">
           {recentlyViewed.map((product: any) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -214,7 +214,7 @@ function BrowsingHistorySection() {
           <h3 className="text-sm font-medium">Loading browsing history...</h3>
         </div>
       ) : history.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 overflow-hidden">
           {history.map((product: any) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -225,6 +225,38 @@ function BrowsingHistorySection() {
           <p className="text-xs text-muted-foreground mt-1">Products you search for will appear here</p>
         </div>
       )}
+    </div>
+  );
+}
+
+function FiftyPercentOffSection({ products }: { products: Product[] }) {
+  // Filter products with at least 50% off
+  const fiftyOffProducts = products.filter(
+    (p) => p.mrp && p.price && p.mrp >= 2 * p.price
+  ).slice(0, 10); // Show up to 10
+  if (fiftyOffProducts.length === 0) return null;
+  return (
+    <div className="container mx-auto py-6 px-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-medium">Up to 50% Off Products</h2>
+        <Link href="/products?discount=50" className="text-primary hover:underline font-medium text-sm">View All</Link>
+      </div>
+      <div className="flex gap-6 overflow-x-auto pb-2">
+        {fiftyOffProducts.map((product) => {
+          // Calculate discount percent
+          const discount = product.mrp && product.price ? Math.round(((product.mrp - product.price) / product.mrp) * 100) : 0;
+          return (
+            <div key={product.id} className="flex-shrink-0 w-48 max-w-full relative">
+              {discount > 0 && (
+                <div className="absolute top-2 left-2 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded z-10 shadow border border-white">
+                  {discount}% OFF
+                </div>
+              )}
+              <ProductCard product={product} showAddToCart={true} showWishlist={true} showDiscountBadge={true} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -506,13 +538,14 @@ export default function HomePage() {
             {isLoading ? (
               <ProductsLoading />
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 overflow-hidden">
                 {featuredProducts.map((product, index) => (
                   <ProductCard
                     key={product.id}
                     product={product}
                     featured={true}
                     priority={index < 3} // Priority loading for first 3 products
+                    showDiscountBadge={true}
                   />
                 ))}
               </div>
@@ -521,26 +554,25 @@ export default function HomePage() {
         </div>
       </LazySection>
 
-      {/* Browsing History Section */}
-      <BrowsingHistorySection />
       {/* Recently Viewed Section */}
       <RecentlyViewedSection />
+      <FiftyPercentOffSection products={products} />
 
       {/* Category Blocks - Amazon style */}
       {!category && (
-        <div className="container mx-auto px-2 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="container mx-auto px-2 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allCategories.map((categoryName) => {
             const products = getProductsByCategory(categoryName).slice(0, 4);
             if (products.length === 0) return null;
             return (
-              <div key={categoryName} className="bg-white rounded-2xl shadow-lg p-4 flex flex-col h-full border border-cream hover:shadow-2xl transition-all">
+              <div key={categoryName} className="bg-white rounded-2xl shadow-lg p-4 flex flex-col h-full border border-cream hover:shadow-2xl transition-all min-w-[340px] min-h-[420px] max-w-full">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="text-xl font-bold text-gray-800">{categoryName}</h2>
                   <Link href={`/category/${categoryName.toLowerCase()}`} className="text-primary hover:underline font-medium text-sm">View All</Link>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 grid-rows-2 gap-6 w-full h-full overflow-hidden">
                   {products.map((product, idx) => (
-                    <ProductCard key={product.id} product={product} priority={idx < 2} />
+                    <ProductCard key={product.id} product={product} priority={idx < 2} compact={true} showAddToCart={false} showWishlist={false} />
                   ))}
                 </div>
               </div>
@@ -578,12 +610,14 @@ export default function HomePage() {
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 overflow-hidden">
                   {infiniteProducts.map((product, index) => (
                     <ProductCard
                       key={product.id}
                       product={product}
                       priority={index < 6}
+                      showAddToCart={true}
+                      showWishlist={true}
                     />
                   ))}
                 </div>
@@ -647,7 +681,7 @@ export default function HomePage() {
             {category} Products
           </h2>
           <div className="bg-cream p-4 rounded shadow-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 overflow-hidden">
               {products.map((product, index) =>
                 category?.toLowerCase() === "fashion" ? (
                   <FashionProductCardFixed
@@ -709,6 +743,9 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      {/* Browsing History Section - always at the end */}
+      <BrowsingHistorySection />
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
@@ -776,6 +813,8 @@ function CategorySection({
                   key={product.id}
                   product={product}
                   priority={productIndex < 3} // Priority loading for first 3 products
+                  compact={true}
+                  showAddToCart={false}
                 />
               )
             )}
