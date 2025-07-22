@@ -105,13 +105,15 @@ export const ProductCard = memo(function ProductCard({
     }
   };
 
+  const parsedMrp = product.mrp != null && !isNaN(Number(product.mrp)) ? Number(product.mrp) : null;
+
   // Determine if this should be a priority image (featured products or first few products)
   const shouldPrioritize = priority || featured;
 
   // Calculate discount percentage for any product with MRP > price
   const discountPercent =
-    product.mrp && product.price && product.mrp > product.price
-      ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
+    parsedMrp && product.price && parsedMrp > product.price
+      ? Math.round(((parsedMrp - product.price) / parsedMrp) * 100)
       : 0;
   const hasDiscount = discountPercent > 0;
 
@@ -130,8 +132,8 @@ export const ProductCard = memo(function ProductCard({
       <Card
         className={
           compact
-            ? "bg-white w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
-            : "bg-white h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
+            ? "bg-offwhite w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
+            : "bg-offwhite h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
         }
         onClick={() => {
             // Manually add to recently viewed products as backup
@@ -203,10 +205,9 @@ export const ProductCard = memo(function ProductCard({
               {product.gstDetails && product.gstDetails.priceWithGst != null
                 ? formatPrice(product.gstDetails.priceWithGst)
                 : formatPrice(product.price)}
-              {/* Show MRP strikethrough only for featured deals with real discounts */}
-              {hasDiscount && typeof product.mrp === 'number' && (
+              {parsedMrp && parsedMrp > product.price && (
                 <span className="text-gray-400 text-sm line-through ml-2">
-                  {formatPrice(product.mrp)}
+                  {formatPrice(parsedMrp)}
                 </span>
               )}
             </div>

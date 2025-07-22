@@ -44,6 +44,7 @@ export function FashionProductCard({ product }: FashionProductCardProps) {
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || '';
   };
+  const parsedMrp = product.mrp != null && !isNaN(Number(product.mrp)) ? Number(product.mrp) : null;
   
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -94,6 +95,11 @@ export function FashionProductCard({ product }: FashionProductCardProps) {
             </h3>
             <div className="text-green-700 font-bold mt-1 text-center flex items-center justify-center gap-2 text-lg">
               {formatPrice(product.price)}
+              {parsedMrp && parsedMrp > product.price && (
+                <span className="text-gray-400 text-sm line-through ml-2">
+                  {formatPrice(parsedMrp)}
+                </span>
+              )}
             </div>
           </div>
           <Button 

@@ -138,6 +138,7 @@ export function FashionProductCardFixed({
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
   };
+  const parsedMrp = product.mrp != null && !isNaN(Number(product.mrp)) ? Number(product.mrp) : null;
 
   return (
     <div className="relative bg-cream border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
@@ -164,8 +165,13 @@ export function FashionProductCardFixed({
               <h3 className="font-medium text-center text-sm line-clamp-2 h-10">
                 {product.name}
               </h3>
-              <div className="text-green-600 font-medium mt-1 text-center">
+              <div className="text-green-600 font-medium mt-1 text-center flex items-center justify-center gap-2">
                 {formatPrice(product.price)}
+                {parsedMrp && parsedMrp > product.price && (
+                  <span className="text-gray-400 text-xs line-through ml-2">
+                    {formatPrice(parsedMrp)}
+                  </span>
+                )}
               </div>
             </div>
 
