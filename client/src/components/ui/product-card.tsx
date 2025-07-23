@@ -35,6 +35,8 @@ interface ProductCardProps {
   compact?: boolean; // New prop for square/compact style
   showWishlist?: boolean; // New prop to control Wishlist button
   showDiscountBadge?: boolean; // New prop
+  naked?: boolean; // If true, render without Card box
+  idx?: number; // Index for tilt/rotation
 }
 
 export const ProductCard = memo(function ProductCard({
@@ -45,6 +47,8 @@ export const ProductCard = memo(function ProductCard({
   compact = false, // Default to false
   showWishlist = true, // Default to true
   showDiscountBadge = false,
+  naked = false,
+  idx,
 }: ProductCardProps) {
   const cartContext = useContext(CartContext); // Use context directly with optional chaining
   const queryClient = useQueryClient();
@@ -117,7 +121,89 @@ export const ProductCard = memo(function ProductCard({
       : 0;
   const hasDiscount = discountPercent > 0;
 
-  // Use the same dimensions and styling for all product cards regardless of featured status
+  // For naked/compact grid, apply a gentle, real-world tilt to all products
+  const getImageTiltClass = (idx?: number) => {
+    if (!naked || !compact || typeof idx !== 'number') return '';
+    // Gentle, real-world tilt classes
+    const tilts = ['', '-rotate-2', 'rotate-2', '-rotate-1', 'rotate-1'];
+    return tilts[idx % tilts.length];
+  };
+
+  if (naked) {
+    // Render without Card box
+    return (
+      <div className="flex flex-col items-stretch w-full h-full cursor-pointer group relative"
+        onClick={() => {
+          // Same click logic as before
+          try {
+            const key = "recently_viewed_products";
+            const existing = localStorage.getItem(key);
+            let ids: number[] = [];
+            if (existing) {
+              try {
+                ids = JSON.parse(existing);
+              } catch {
+                ids = [];
+              }
+            }
+            ids = ids.filter((id: number) => id !== product.id);
+            ids.unshift(product.id);
+            if (ids.length > 20) ids = ids.slice(0, 20);
+            localStorage.setItem(key, JSON.stringify(ids));
+          } catch (e) {}
+          try {
+            fbq("track", "ViewContent", {
+              content_ids: [product.id],
+              content_name: product.name,
+              content_type: "product",
+              value: product.price,
+              currency: "INR",
+            });
+          } catch (e) {}
+          setLocation(`/products/${product.id}`);
+        }}
+      >
+        {/* Discount badge - only show if showDiscountBadge is true */}
+        {showDiscountBadge && hasDiscount && (
+          <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2.5 py-1 rounded-full z-20 shadow-lg border border-white">
+            {discountPercent}% OFF
+          </div>
+        )}
+        {/* Add Wishlist button on top right of card */}
+        {showWishlist && <WishlistButton productId={product.id} variant="card" />}
+        <div className={compact ? "w-full h-32 flex items-center justify-center rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all relative" : "w-full h-44 flex items-center justify-center rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all relative"}>
+          {/* Discount badge - only show if showDiscountBadge is true */}
+          {showDiscountBadge && hasDiscount && (
+            <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2.5 py-1 rounded-full z-20 shadow-lg border border-white">
+              {discountPercent}% OFF
+            </div>
+          )}
+          <ProductImage
+            product={product}
+            className={compact ? `object-contain max-h-28 w-auto h-auto ${getImageTiltClass(idx)}` : "object-contain max-h-40 w-auto h-auto"}
+            priority={shouldPrioritize}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+          />
+        </div>
+        <div className={compact ? "flex flex-col w-full px-2" : "flex flex-col flex-grow w-full px-3 py-2"}>
+          <h3 className={compact ? "font-semibold text-left text-base leading-tight line-clamp-2 min-h-[36px] text-black group-hover:text-primary transition-colors" : "font-semibold text-left text-lg leading-tight line-clamp-2 min-h-[44px] text-black group-hover:text-primary transition-colors"}>
+            {product.name}
+          </h3>
+          <div className={compact ? "text-green-700 font-bold text-left flex items-center gap-2 text-base" : "text-green-700 font-bold mt-1 text-left flex items-center gap-2 text-lg"}>
+            {product.gstDetails && product.gstDetails.priceWithGst != null
+              ? formatPrice(product.gstDetails.priceWithGst)
+              : formatPrice(product.price)}
+            {parsedMrp && parsedMrp > product.price && (
+              <span className="text-gray-400 text-sm line-through ml-2">
+                {formatPrice(parsedMrp)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+  // Default: render with Card box
   return (
     <div className="relative box-border m-0 min-w-0 w-full h-full">
       {/* Discount badge - only show if showDiscountBadge is true */}
@@ -128,18 +214,11 @@ export const ProductCard = memo(function ProductCard({
       )}
       {/* Add Wishlist button on top right of card */}
       {showWishlist && <WishlistButton productId={product.id} variant="card" />}
-
       <Card
         className={
-          featured
-            ? (compact
-                ? "bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
-                : "bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
-              )
-            : (compact
-                ? "bg-cream w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
-                : "bg-cream h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
-              )
+          compact
+            ? "bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
+            : "bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
         }
         onClick={() => {
             // Manually add to recently viewed products as backup
@@ -194,10 +273,10 @@ export const ProductCard = memo(function ProductCard({
           }}
       >
         <CardContent className={compact ? "p-0 w-full flex flex-col items-stretch" : "p-0 w-full flex flex-col items-stretch h-full"}>
-          <div className={compact ? "w-full h-32 flex items-center justify-center bg-white rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all" : "w-full h-44 flex items-center justify-center bg-white rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all"}>
+          <div className={compact ? "w-full h-32 flex items-center justify-center rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all" : "w-full h-44 flex items-center justify-center rounded-t-lg overflow-hidden border-b border-gray-100 group-hover:border-orange-300 transition-all"}>
             <ProductImage
               product={product}
-              className={compact ? "object-contain max-h-28 w-auto h-auto" : "object-contain max-h-40 w-auto h-auto"}
+              className={compact ? `object-contain max-h-28 w-auto h-auto ${getImageTiltClass(idx)}` : "object-contain max-h-40 w-auto h-auto"}
               priority={shouldPrioritize}
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
             />
