@@ -86,7 +86,7 @@ export const ProductRecommendationCard: React.FC<ProductRecommendationCardProps>
 
   return (
     <Link href={`/product/${product.id}`} onClick={handleProductClick}>
-      <Card className={cn("h-full cursor-pointer hover:shadow-md transition-shadow", className)}>
+      <Card className={cn("h-full cursor-pointer hover:shadow-md transition-shadow bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] border border-cream shadow", className)}>
         <CardContent className="p-3">
           <div className="relative aspect-square w-full overflow-hidden rounded-md mb-2 flex items-center justify-center bg-slate-50">
             <img

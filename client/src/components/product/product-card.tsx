@@ -72,7 +72,7 @@ export function ProductCard({
   };
 
   return (
-    <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
+    <Card className="overflow-hidden transition-all duration-200 hover:shadow-md bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] border border-cream shadow">
       <div className="relative h-48 overflow-hidden bg-gray-100">
         <Link href={`/product/${id}`} className="block h-full">
           <img

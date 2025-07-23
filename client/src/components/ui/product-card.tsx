@@ -131,9 +131,15 @@ export const ProductCard = memo(function ProductCard({
 
       <Card
         className={
-          compact
-            ? "bg-offwhite w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
-            : "bg-offwhite h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-gray-200 rounded-lg shadow group cursor-pointer box-border min-w-0"
+          featured
+            ? (compact
+                ? "bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
+                : "bg-gradient-to-br from-[#f5e7d4] via-[#fff8f1] to-[#ffe7b8] h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
+              )
+            : (compact
+                ? "bg-cream w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
+                : "bg-cream h-full w-full flex flex-col items-stretch p-0 transition-transform duration-200 hover:shadow-2xl hover:-translate-y-1.5 border border-cream rounded-lg shadow group cursor-pointer box-border min-w-0"
+              )
         }
         onClick={() => {
             // Manually add to recently viewed products as backup
